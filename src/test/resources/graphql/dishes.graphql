@@ -1,0 +1,18 @@
+{
+    dish(id: 1){
+        id
+        createdAt
+        updatedAt
+        name
+        description
+        picture
+        price
+        status
+        categories {
+            id
+            createdAt
+            updatedAt
+            name
+        }
+    }
+}

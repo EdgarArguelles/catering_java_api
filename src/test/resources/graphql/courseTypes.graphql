@@ -1,0 +1,25 @@
+fragment allCourseTypeData on CourseType {
+    id
+    createdAt
+    updatedAt
+    name
+    picture
+    position
+    status
+    activeDishes {
+        id
+        name
+    }
+}
+
+query all {
+    activeCourseTypes {
+        ...allCourseTypeData
+    }
+}
+
+query byID {
+    courseType(id: 1) {
+        ...allCourseTypeData
+    }
+}
