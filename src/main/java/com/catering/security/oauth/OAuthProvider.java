@@ -22,6 +22,13 @@ public interface OAuthProvider {
     String getApiSecret();
 
     /**
+     * Get Api Access code of OAuth provider
+     *
+     * @return Api Access code
+     */
+    String getAccessCode();
+
+    /**
      * Construct the URL to redirect the user to for authorization. Use of implicit grant
      * is discouraged unless there is no other option available. Use
      *

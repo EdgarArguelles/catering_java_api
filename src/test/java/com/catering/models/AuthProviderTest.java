@@ -25,6 +25,7 @@ public class AuthProviderTest {
         assertNull(authProvider.getDescription());
         assertNull(authProvider.getAuthKey());
         assertNull(authProvider.getAuthSecret());
+        assertNull(authProvider.getAccessCode());
         assertNull(authProvider.getAuthentications());
     }
 
@@ -41,6 +42,7 @@ public class AuthProviderTest {
         assertNull(authProvider.getDescription());
         assertNull(authProvider.getAuthKey());
         assertNull(authProvider.getAuthSecret());
+        assertNull(authProvider.getAccessCode());
         assertNull(authProvider.getAuthentications());
     }
 
@@ -53,13 +55,15 @@ public class AuthProviderTest {
         final String DESCRIPTION = "description";
         final String AUTH_KEY = "key";
         final String AUTH_SECRET = "secret";
-        final AuthProvider authProvider = new AuthProvider(NAME, DESCRIPTION, AUTH_KEY, AUTH_SECRET);
+        final String ACCESS_CODE = "code";
+        final AuthProvider authProvider = new AuthProvider(NAME, DESCRIPTION, AUTH_KEY, AUTH_SECRET, ACCESS_CODE);
 
         assertNull(authProvider.getId());
         assertSame(NAME, authProvider.getName());
         assertSame(DESCRIPTION, authProvider.getDescription());
         assertSame(AUTH_KEY, authProvider.getAuthKey());
         assertSame(AUTH_SECRET, authProvider.getAuthSecret());
+        assertSame(ACCESS_CODE, authProvider.getAccessCode());
         assertNull(authProvider.getAuthentications());
     }
 
@@ -124,6 +128,18 @@ public class AuthProviderTest {
     }
 
     /**
+     * Should set and get accessCode
+     */
+    @Test
+    public void setGetAccessCode() {
+        final AuthProvider authProvider = new AuthProvider();
+        final String ACCESS_CODE = "code";
+        authProvider.setAccessCode(ACCESS_CODE);
+
+        assertSame(ACCESS_CODE, authProvider.getAccessCode());
+    }
+
+    /**
      * Should set and get authentications
      */
     @Test
@@ -165,13 +181,13 @@ public class AuthProviderTest {
      */
     @Test
     public void noEqualsID() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider2.setId("ID1");
         authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProviderNull.setId(null);
         authProviderNull.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
 
@@ -185,13 +201,13 @@ public class AuthProviderTest {
      */
     @Test
     public void noEqualsName() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N1", "D", "AK", "AS");
+        final AuthProvider authProvider2 = new AuthProvider("N1", "D", "AK", "AS", "AC");
         authProvider2.setId("ID");
         authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProviderNull = new AuthProvider(null, "D", "AK", "AS");
+        final AuthProvider authProviderNull = new AuthProvider(null, "D", "AK", "AS", "AC");
         authProviderNull.setId("ID");
         authProviderNull.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
 
@@ -205,13 +221,13 @@ public class AuthProviderTest {
      */
     @Test
     public void noEqualsDescription() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N", "D1", "AK", "AS");
+        final AuthProvider authProvider2 = new AuthProvider("N", "D1", "AK", "AS", "AC");
         authProvider2.setId("ID");
         authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProviderNull = new AuthProvider("N", null, "AK", "AS");
+        final AuthProvider authProviderNull = new AuthProvider("N", null, "AK", "AS", "AC");
         authProviderNull.setId("ID");
         authProviderNull.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
 
@@ -225,13 +241,13 @@ public class AuthProviderTest {
      */
     @Test
     public void noEqualsAuthKey() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK1", "AS");
+        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK1", "AS", "AC");
         authProvider2.setId("ID");
         authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProviderNull = new AuthProvider("N", "D", null, "AS");
+        final AuthProvider authProviderNull = new AuthProvider("N", "D", null, "AS", "AC");
         authProviderNull.setId("ID");
         authProviderNull.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
 
@@ -245,13 +261,33 @@ public class AuthProviderTest {
      */
     @Test
     public void noEqualsAuthSecret() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS1");
+        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS1", "AC");
         authProvider2.setId("ID");
         authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", null);
+        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", null, "AC");
+        authProviderNull.setId("ID");
+        authProviderNull.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
+
+        assertNotEquals(authProvider1, authProvider2);
+        assertNotEquals(authProvider1, authProviderNull);
+        assertNotEquals(authProviderNull, authProvider1);
+    }
+
+    /**
+     * Should fail equals due accessCode
+     */
+    @Test
+    public void noEqualsAccessCode() {
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
+        authProvider1.setId("ID");
+        authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
+        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS", "AC1");
+        authProvider2.setId("ID");
+        authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
+        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", "AS", null);
         authProviderNull.setId("ID");
         authProviderNull.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
 
@@ -265,13 +301,13 @@ public class AuthProviderTest {
      */
     @Test
     public void noEqualsAuthentications() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider2.setId("ID");
         authProvider2.setAuthentications(List.of(new Authentication("A1")));
-        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProviderNull = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProviderNull.setId("ID");
         authProviderNull.setAuthentications(null);
 
@@ -285,10 +321,10 @@ public class AuthProviderTest {
      */
     @Test
     public void testEquals() {
-        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider1 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider1.setId("ID");
         authProvider1.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
-        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS");
+        final AuthProvider authProvider2 = new AuthProvider("N", "D", "AK", "AS", "AC");
         authProvider2.setId("ID");
         authProvider2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         final AuthProvider authProviderNull1 = new AuthProvider();
@@ -317,12 +353,13 @@ public class AuthProviderTest {
     }
 
     /**
-     * Should get 4 errors when parameters empty
+     * Should get 5 errors when parameters empty
      */
     @Test
     public void validateWhenEmpty() {
-        final AuthProvider a = new AuthProvider("", "", "", "");
+        final AuthProvider a = new AuthProvider("", "", "", "", "");
         final List<NestedError> nestedErrorsExpected = List.of(
+                new ValidationNestedError("accessCode", "size must be between 1 and 255"),
                 new ValidationNestedError("authKey", "size must be between 1 and 255"),
                 new ValidationNestedError("authSecret", "size must be between 1 and 255"),
                 new ValidationNestedError("description", "size must be between 1 and 255"),
@@ -335,14 +372,15 @@ public class AuthProviderTest {
     }
 
     /**
-     * Should get 4 errors when parameters are bigger than max
+     * Should get 5 errors when parameters are bigger than max
      */
     @Test
     public void validateWhenMax() {
         final StringBuffer longText = new StringBuffer();
         IntStream.range(0, 256).forEach(i -> longText.append("a"));
-        final AuthProvider a = new AuthProvider(longText.toString(), longText.toString(), longText.toString(), longText.toString());
+        final AuthProvider a = new AuthProvider(longText.toString(), longText.toString(), longText.toString(), longText.toString(), longText.toString());
         final List<NestedError> nestedErrorsExpected = List.of(
+                new ValidationNestedError("accessCode", "size must be between 1 and 255"),
                 new ValidationNestedError("authKey", "size must be between 1 and 255"),
                 new ValidationNestedError("authSecret", "size must be between 1 and 255"),
                 new ValidationNestedError("description", "size must be between 1 and 255"),
@@ -359,7 +397,7 @@ public class AuthProviderTest {
      */
     @Test
     public void validateWhenOK() {
-        final AuthProvider a = new AuthProvider("A", "B", "C", "D");
+        final AuthProvider a = new AuthProvider("A", "B", "C", "D", "E");
         final List<NestedError> nestedErrorsExpected = Collections.emptyList();
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 

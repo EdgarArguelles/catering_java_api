@@ -22,9 +22,11 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 public class FacebookProviderTest {
 
-    private final String authKeyExpected = "Auth Key";
+    private final String authKeyExpected = "489262341460511";
 
-    private final String authSecretExpected = "Auth Key";
+    private final String authSecretExpected = "8ff4dae0a47a2e82a75332859350cec0";
+
+    private final String accessCodeExpected = "EAAG8ZB0QQkh8BAMdZB48YkrLozHY9Ag8jdUhHjd7NJZCn16mQSdfYmugfW8sksDswOr7N6NVwJ6ngIaRUsETPSs5TodFGEGHQXT8FuUIKVZAosD6AsMxkYSPVLjz0bVn6g1ohxyFBETpZA8h1hwZCXjaDtTyYTfka2eQMZAXMOgIX6pquFGSVOMOkL5qBBYUcsZD";
 
     @Autowired
     @Qualifier("facebookProvider")
@@ -38,6 +40,7 @@ public class FacebookProviderTest {
         final AuthProvider authProvider = new AuthProvider("A1");
         authProvider.setAuthKey(authKeyExpected);
         authProvider.setAuthSecret(authSecretExpected);
+        authProvider.setAccessCode(accessCodeExpected);
         given(authProviderRepository.findByName("FACEBOOK")).willReturn(authProvider);
     }
 
@@ -63,6 +66,16 @@ public class FacebookProviderTest {
 
         assertSame(authSecretExpected, authSecretResult);
         assertSame(authSecretExpected, authSecretResult2);
+    }
+
+    /**
+     * Should get accessCode
+     */
+    @Test
+    public void getAccessCode() {
+        final String accessCodeResult = facebookProvider.getAccessCode();
+
+        assertNotNull(accessCodeResult);
     }
 
     /**

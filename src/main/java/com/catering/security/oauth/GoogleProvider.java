@@ -31,6 +31,11 @@ public class GoogleProvider implements OAuthProvider {
     }
 
     @Override
+    public String getAccessCode() {
+        return null;
+    }
+
+    @Override
     public String getAuthorizeUrl(String callback, String state) {
         OAuth2Parameters oAuth2Parameters = new OAuth2Parameters();
         oAuth2Parameters.setRedirectUri(callback);

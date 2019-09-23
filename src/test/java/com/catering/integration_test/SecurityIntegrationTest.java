@@ -175,4 +175,58 @@ public class SecurityIntegrationTest {
         assertEquals("123", ping.get("id"));
         assertEquals(TOKEN, ping.get("token"));
     }
+
+    /**
+     * Should return an error response
+     */
+    @Test
+    public void getAccessCodeNotSocial() throws Exception {
+        final String query = "query {getAccessCode}";
+        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+
+        assertNull(mapResult.get("data"));
+        assertTrue(errors.get(0).get("message").contains("Missing field argument social"));
+    }
+
+    /**
+     * Should return an error response
+     */
+    @Test
+    public void getAccessCodeInvalidSocial() throws Exception {
+        final String query = "query {getAccessCode(social: \"invalid\")}";
+        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+
+        assertNull(mapResult.get("data"));
+        assertTrue(errors.get(0).get("message").contains("is not a valid 'SOCIAL_MEDIA'"));
+    }
+
+    /**
+     * Should return null when social is Google
+     */
+    @Test
+    public void getAccessCodeGoogle() throws Exception {
+        final String query = "query {getAccessCode(social: GOOGLE)}";
+        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final Map<String, String> data = (Map) mapResult.get("data");
+        final String getAccessCode = data.get("getAccessCode");
+
+        assertNull(mapResult.get("errors"));
+        assertNull(getAccessCode);
+    }
+
+    /**
+     * Should not return null when social is Facebook
+     */
+    @Test
+    public void getAccessCodeFacebook() throws Exception {
+        final String query = "query {getAccessCode(social: FACEBOOK)}";
+        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final Map<String, String> data = (Map) mapResult.get("data");
+        final String getAccessCode = data.get("getAccessCode");
+
+        assertNull(mapResult.get("errors"));
+        assertNotNull(getAccessCode);
+    }
 }

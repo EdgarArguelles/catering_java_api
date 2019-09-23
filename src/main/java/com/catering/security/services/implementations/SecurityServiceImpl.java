@@ -4,6 +4,7 @@ import com.catering.exceptions.CateringValidationException;
 import com.catering.models.Person;
 import com.catering.repositories.PersonRepository;
 import com.catering.security.factories.LoggedUserFactory;
+import com.catering.security.oauth.OAuthProvider;
 import com.catering.security.pojos.LoggedUser;
 import com.catering.security.services.SecurityService;
 import com.catering.security.services.TokenService;
@@ -12,6 +13,7 @@ import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,14 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    @Qualifier("facebookProvider")
+    private OAuthProvider facebookProvider;
+
+    @Autowired
+    @Qualifier("googleProvider")
+    private OAuthProvider googleProvider;
 
     @Override
     @GraphQLQuery(name = "changeRole", description = "Switch to another user's role")
@@ -60,5 +70,18 @@ public class SecurityServiceImpl implements SecurityService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    @GraphQLQuery(name = "getAccessCode", description = "Gets access code required by social media API")
+    public String getAccessCode(@GraphQLNonNull @GraphQLArgument(name = "social", description = "Social media name") SOCIAL_MEDIA social) {
+        switch (social) {
+            case FACEBOOK:
+                return facebookProvider.getAccessCode();
+            case GOOGLE:
+                return googleProvider.getAccessCode();
+        }
+
+        return null;
     }
 }
