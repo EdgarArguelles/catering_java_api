@@ -66,6 +66,16 @@ public class GoogleProviderTest {
     }
 
     /**
+     * Should get accessCode
+     */
+    @Test
+    public void getAccessCode() {
+        final String accessCodeResult = googleProvider.getAccessCode();
+
+        assertNull(accessCodeResult);
+    }
+
+    /**
      * Should get authorizeUrl
      */
     @Test

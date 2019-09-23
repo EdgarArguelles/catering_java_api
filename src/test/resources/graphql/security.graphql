@@ -1,0 +1,14 @@
+query ping {
+    ping {
+        id,
+        fullName,
+        image,
+        role,
+        token,
+        permissions
+    }
+}
+
+query getAccessCode {
+    getAccessCode(social: FACEBOOK)
+}

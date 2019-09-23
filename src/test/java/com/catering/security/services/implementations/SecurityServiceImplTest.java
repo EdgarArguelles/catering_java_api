@@ -5,6 +5,7 @@ import com.catering.models.Person;
 import com.catering.models.Role;
 import com.catering.repositories.PersonRepository;
 import com.catering.security.factories.LoggedUserFactory;
+import com.catering.security.oauth.OAuthProvider;
 import com.catering.security.pojos.LoggedUser;
 import com.catering.security.services.SecurityService;
 import com.catering.security.services.TokenService;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +45,14 @@ public class SecurityServiceImplTest {
 
     @MockBean
     private TokenService tokenService;
+
+    @MockBean
+    @Qualifier("facebookProvider")
+    private OAuthProvider facebookProvider;
+
+    @MockBean
+    @Qualifier("googleProvider")
+    private OAuthProvider googleProvider;
 
     /**
      * Should throw CateringValidationException when not context
@@ -163,5 +173,33 @@ public class SecurityServiceImplTest {
         assertNotSame(userExpected, userResult);
         assertEquals(userExpected, userResult);
         verify(tokenService, times(1)).createToken(userMocked);
+    }
+
+    /**
+     * Should get facebook access code
+     */
+    @Test
+    public void getAccessCodeFacebook() {
+        final String ACCESS_CODE = "facebook";
+        given(facebookProvider.getAccessCode()).willReturn(ACCESS_CODE);
+
+        final String accessCodeResult = securityService.getAccessCode(SecurityService.SOCIAL_MEDIA.FACEBOOK);
+
+        assertSame(ACCESS_CODE, accessCodeResult);
+        verify(facebookProvider, times(1)).getAccessCode();
+    }
+
+    /**
+     * Should get google access code
+     */
+    @Test
+    public void getAccessCodeGoogle() {
+        final String ACCESS_CODE = "google";
+        given(googleProvider.getAccessCode()).willReturn(ACCESS_CODE);
+
+        final String accessCodeResult = securityService.getAccessCode(SecurityService.SOCIAL_MEDIA.GOOGLE);
+
+        assertSame(ACCESS_CODE, accessCodeResult);
+        verify(googleProvider, times(1)).getAccessCode();
     }
 }

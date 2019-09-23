@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
@@ -36,6 +37,8 @@ public class SecurityServiceAuthenticationTest {
     private final String changeRoleQuery = "query {changeRole(roleId: \"55\") {id fullName}}";
 
     private final String pingQuery = "query {ping {id fullName}}";
+
+    private final String getAccessCodeQuery = "query {getAccessCode(social: FACEBOOK)}";
 
     @Before
     public void setup() throws Exception {
@@ -102,5 +105,37 @@ public class SecurityServiceAuthenticationTest {
         assertNull(mapResult.get("errors"));
         assertNull(ping.get("id"));
         assertNull(ping.get("fullName"));
+    }
+
+    /**
+     * Should return AccessCode when not token
+     */
+    @Test
+    public void getAccessCodeNotToken() throws Exception {
+        final Map mapResult = integrationTest.performGraphQL(getAccessCodeQuery, null);
+        final Map data = (Map) mapResult.get("data");
+
+        assertNull(mapResult.get("errors"));
+        assertNotNull(data.get("getAccessCode"));
+    }
+
+    /**
+     * Should return an UNAUTHORIZED error response when token invalid
+     */
+    @Test
+    public void getAccessCodeTokenInvalid() throws Exception {
+        integrationTest.failGraphQLTokenInvalid(getAccessCodeQuery);
+    }
+
+    /**
+     * Should return AccessCode when not permissions
+     */
+    @Test
+    public void getAccessCodeNotPermission() throws Exception {
+        final Map mapResult = integrationTest.performGraphQL(getAccessCodeQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map data = (Map) mapResult.get("data");
+
+        assertNull(mapResult.get("errors"));
+        assertNotNull(data.get("getAccessCode"));
     }
 }

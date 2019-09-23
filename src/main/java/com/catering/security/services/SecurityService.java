@@ -1,6 +1,7 @@
 package com.catering.security.services;
 
 import com.catering.security.pojos.LoggedUser;
+import io.leangen.graphql.annotations.GraphQLEnumValue;
 
 import java.io.IOException;
 
@@ -8,6 +9,11 @@ import java.io.IOException;
  * Deals with security process
  */
 public interface SecurityService {
+
+    enum SOCIAL_MEDIA {
+        @GraphQLEnumValue(description = "use Facebook") FACEBOOK,
+        @GraphQLEnumValue(description = "use Google") GOOGLE,
+    }
 
     /**
      * Creates a new LoggedUser instance with the requested role
@@ -24,4 +30,12 @@ public interface SecurityService {
      * @return LoggedUser instance
      */
     LoggedUser getLoggedUser();
+
+    /**
+     * Gets access code required by social media API
+     *
+     * @param social social media name
+     * @return access code
+     */
+    String getAccessCode(SOCIAL_MEDIA social);
 }

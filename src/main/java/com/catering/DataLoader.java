@@ -69,8 +69,8 @@ public class DataLoader {
 
     private void insertData() {
         List<AuthProvider> authProviders = List.of(
-                new AuthProvider("FACEBOOK", "Provide access with Facebook account", "489262341460511", "8ff4dae0a47a2e82a75332859350cec0"),
-                new AuthProvider("GOOGLE", "Provide access with Google account", "671405016959-kdd2b8n9rii21drdm6pb9t554s6i5psq.apps.googleusercontent.com", "6lOkkES-_qiw28LMH400JoLH")
+                new AuthProvider("FACEBOOK", "Provide access with Facebook account", "489262341460511", "8ff4dae0a47a2e82a75332859350cec0", "EAAG8ZB0QQkh8BAMdZB48YkrLozHY9Ag8jdUhHjd7NJZCn16mQSdfYmugfW8sksDswOr7N6NVwJ6ngIaRUsETPSs5TodFGEGHQXT8FuUIKVZAosD6AsMxkYSPVLjz0bVn6g1ohxyFBETpZA8h1hwZCXjaDtTyYTfka2eQMZAXMOgIX6pquFGSVOMOkL5qBBYUcsZD"),
+                new AuthProvider("GOOGLE", "Provide access with Google account", "671405016959-kdd2b8n9rii21drdm6pb9t554s6i5psq.apps.googleusercontent.com", "6lOkkES-_qiw28LMH400JoLH", null)
         );
         authProviderRepository.saveAll(authProviders);
 

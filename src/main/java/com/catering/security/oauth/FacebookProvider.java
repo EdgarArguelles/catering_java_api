@@ -9,6 +9,11 @@ import org.springframework.social.oauth2.GrantType;
 import org.springframework.social.oauth2.OAuth2Operations;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class FacebookProvider implements OAuthProvider {
@@ -28,6 +33,18 @@ public class FacebookProvider implements OAuthProvider {
     @Override
     public String getApiSecret() {
         return getAuthProvider().getAuthSecret();
+    }
+
+    @Override
+    public String getAccessCode() {
+        try {
+            String accessCode = getAuthProvider().getAccessCode();
+            Map body = new RestTemplate().getForObject("https://graph.facebook.com/v4.0/me/accounts?access_token=" + accessCode, Map.class);
+            List<LinkedHashMap> data = (List<LinkedHashMap>) body.get("data");
+            return data.get(0).get("access_token").toString();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
