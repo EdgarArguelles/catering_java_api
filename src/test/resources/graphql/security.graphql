@@ -1,10 +1,10 @@
 query ping {
     ping {
-        id,
-        fullName,
-        image,
-        role,
-        token,
+        id
+        fullName
+        image
+        role
+        token
         permissions
     }
 }

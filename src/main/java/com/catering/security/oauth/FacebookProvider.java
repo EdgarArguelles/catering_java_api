@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("unchecked")
 public class FacebookProvider implements OAuthProvider {
 
     private static OAuth2Operations oAuthOperations;

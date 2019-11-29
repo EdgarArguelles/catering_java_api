@@ -33,7 +33,7 @@ public class PageFactoryImplTest {
 
         final List<String> SORT = null;
         final PageDataRequest pageDataRequest = new PageDataRequest(PAGE, SIZE, PageDataRequest.SORT_DIRECTION.DESC, SORT);
-        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, new Sort(Sort.Direction.ASC, "id"));
+        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.ASC, "id"));
 
         final PageRequest pageRequestResult = pageFactory.pageRequest(pageDataRequest);
 
@@ -51,7 +51,7 @@ public class PageFactoryImplTest {
 
         final List<String> SORT = Collections.emptyList();
         final PageDataRequest pageDataRequest = new PageDataRequest(PAGE, SIZE, PageDataRequest.SORT_DIRECTION.DESC, SORT);
-        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, new Sort(Sort.Direction.ASC, "id"));
+        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.ASC, "id"));
 
         final PageRequest pageRequestResult = pageFactory.pageRequest(pageDataRequest);
 
@@ -69,7 +69,7 @@ public class PageFactoryImplTest {
         final List<String> SORT = List.of("sort1", "sort2");
         final PageDataRequest pageDataRequest = new PageDataRequest(PAGE, SIZE, PageDataRequest.SORT_DIRECTION.DESC, SORT);
 
-        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, new Sort(Sort.Direction.DESC, SORT));
+        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, SORT.toArray(new String[0])));
 
         final PageRequest pageRequestResult = pageFactory.pageRequest(pageDataRequest);
 
@@ -87,7 +87,7 @@ public class PageFactoryImplTest {
         final List<String> SORT = List.of("sort1", "sort2");
         final PageDataRequest pageDataRequest = new PageDataRequest(PAGE, SIZE, PageDataRequest.SORT_DIRECTION.ASC, SORT);
 
-        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, new Sort(Sort.Direction.ASC, SORT));
+        final PageRequest pageRequestExpected = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.ASC, SORT.toArray(new String[0])));
 
         final PageRequest pageRequestResult = pageFactory.pageRequest(pageDataRequest);
 

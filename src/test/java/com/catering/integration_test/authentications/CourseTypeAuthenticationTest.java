@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
@@ -46,7 +45,7 @@ public class CourseTypeAuthenticationTest {
     }
 
     /**
-     * Should return an empty list when not token
+     * Should not get error when not token
      */
     @Test
     public void activeCourseTypesNotToken() throws Exception {
@@ -55,7 +54,6 @@ public class CourseTypeAuthenticationTest {
         final List<Map> activeCourseTypes = data.get("activeCourseTypes");
 
         assertNull(mapResult.get("errors"));
-        assertEquals(0, activeCourseTypes.size());
     }
 
     /**
@@ -67,7 +65,7 @@ public class CourseTypeAuthenticationTest {
     }
 
     /**
-     * Should return an empty list when not permissions
+     * Should not get error when not permissions
      */
     @Test
     public void activeCourseTypesNotPermission() throws Exception {
@@ -76,7 +74,6 @@ public class CourseTypeAuthenticationTest {
         final List<Map> activeCourseTypes = data.get("activeCourseTypes");
 
         assertNull(mapResult.get("errors"));
-        assertEquals(0, activeCourseTypes.size());
     }
 
     /**

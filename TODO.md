@@ -6,8 +6,12 @@ http://localhost:9990/
  Edgar/dark
 
 /////////////// Mongo ///////////////
-./../../../../Tools/mongodb/bin/mongod --auth
+./../../../../Tools/mongodb/bin/mongod --auth --dbpath=/Users/edgararguelles/data/db
 
+////////// when new database ///////////
+./../../../../Tools/mongodb/bin/mongod --dbpath=/Users/edgararguelles/data/db
+./../../../../Tools/mongodb/bin/mongo (in a new tab)
+use admin
 db.createUser( { user: "root", pwd: "password", roles: [ { role: "userAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" } ] } )
 
 /////////////// Docker ///////////////
