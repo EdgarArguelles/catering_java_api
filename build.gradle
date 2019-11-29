@@ -1,11 +1,11 @@
 /**
- * update gradle with the command: ./gradlew wrapper --gradle-version=5.6.2 --distribution-type=all
+ * update gradle with the command: ./gradlew wrapper --gradle-version=6.0.1 --distribution-type=all
  **/
 buildscript {
     ext {
-        appVersion = "0.9.0"
+        appVersion = "0.9.1"
         appName = "catering_java_api"
-        springBootVersion = "2.1.8.RELEASE"
+        springBootVersion = "2.2.1.RELEASE"
     }
     repositories {
         jcenter()
@@ -21,15 +21,15 @@ plugins {
     //id "war" //uncomment to create a war instead of a jar
     id "application" //for sourceCompatibility
     id "jacoco" //junit code coverage
-    id "org.springframework.boot" version "2.1.8.RELEASE" //allow to use ./gradlew bootRun
-    id "com.github.ben-manes.versions" version "0.25.0" //allow to use ./gradlew dependencyUpdates
+    id "org.springframework.boot" version "2.2.1.RELEASE" //allow to use ./gradlew bootRun
+    id "com.github.ben-manes.versions" version "0.27.0" //allow to use ./gradlew dependencyUpdates
 }
 
-sourceCompatibility = JavaVersion.VERSION_12
-targetCompatibility = JavaVersion.VERSION_12
+sourceCompatibility = JavaVersion.VERSION_13
+targetCompatibility = JavaVersion.VERSION_13
 version = appVersion
-jar { baseName = appName } //change to war if you want to create a war instead of a jar
-jacoco { toolVersion = "0.8.2" }
+jar { archiveBaseName = appName } //change to war if you want to create a war instead of a jar
+jacoco { toolVersion = "0.8.5" }
 
 //build
 mainClassName = "com.catering.Application"
@@ -59,6 +59,9 @@ dependencies {
     //recompile on changes, IDEA must enable Build project automatically or Run Build Project for manual
     implementation("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
 
+    //jaxb-api was removed in JDK 11
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
+
     //for rest
     implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
@@ -87,9 +90,9 @@ dependencies {
 
     //jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
-    implementation("com.h2database:h2:1.4.197")
-    implementation("mysql:mysql-connector-java:8.0.17")
-    implementation("org.mongodb:mongo-java-driver:3.11.0")
+    implementation("com.h2database:h2:1.4.200")
+    implementation("mysql:mysql-connector-java:8.0.18")
+    implementation("org.mongodb:mongo-java-driver:3.11.2")
 
     //mongodb
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")

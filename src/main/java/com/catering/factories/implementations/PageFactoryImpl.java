@@ -6,16 +6,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class PageFactoryImpl implements PageFactory {
 
     @Override
     public PageRequest pageRequest(PageDataRequest pageDataRequest) {
-        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
 
         if (pageDataRequest.getSort() != null && !pageDataRequest.getSort().isEmpty()) {
             Sort.Direction direction = pageDataRequest.getDirection() != null ? getDirection(pageDataRequest.getDirection()) : null;
-            sort = new Sort(direction, pageDataRequest.getSort());
+            sort = Sort.by(Objects.requireNonNull(direction), pageDataRequest.getSort().toArray(new String[0]));
         }
 
         return PageRequest.of(pageDataRequest.getPage(), pageDataRequest.getSize(), sort);
