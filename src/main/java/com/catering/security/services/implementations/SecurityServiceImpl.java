@@ -75,13 +75,9 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     @GraphQLQuery(name = "getAccessCode", description = "Gets access code required by social media API")
     public String getAccessCode(@GraphQLNonNull @GraphQLArgument(name = "social", description = "Social media name") SOCIAL_MEDIA social) {
-        switch (social) {
-            case FACEBOOK:
-                return facebookProvider.getAccessCode();
-            case GOOGLE:
-                return googleProvider.getAccessCode();
-        }
-
-        return null;
+        return switch (social) {
+            case FACEBOOK -> facebookProvider.getAccessCode();
+            case GOOGLE -> googleProvider.getAccessCode();
+        };
     }
 }
