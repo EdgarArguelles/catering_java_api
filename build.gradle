@@ -1,11 +1,11 @@
 /**
- * update gradle with the command: ./gradlew wrapper --gradle-version=6.2.1 --distribution-type=all
+ * update gradle with the command: ./gradlew wrapper --gradle-version=6.3 --distribution-type=all
  **/
 buildscript {
     ext {
-        appVersion = "0.9.1"
+        appVersion = "0.9.2"
         appName = "catering_java_api"
-        springBootVersion = "2.2.5.RELEASE"
+        springBootVersion = "2.2.6.RELEASE"
     }
     repositories {
         jcenter()
@@ -21,12 +21,12 @@ plugins {
     //id "war" //uncomment to create a war instead of a jar
     id "application" //for sourceCompatibility
     id "jacoco" //junit code coverage
-    id "org.springframework.boot" version "2.2.5.RELEASE" //allow to use ./gradlew bootRun
+    id "org.springframework.boot" version "2.2.6.RELEASE" //allow to use ./gradlew bootRun
     id "com.github.ben-manes.versions" version "0.28.0" //allow to use ./gradlew dependencyUpdates
 }
 
-sourceCompatibility = JavaVersion.VERSION_13
-targetCompatibility = JavaVersion.VERSION_13
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
 version = appVersion
 jar { archiveBaseName = appName } //change to war if you want to create a war instead of a jar
 jacoco { toolVersion = "0.8.5" }
@@ -92,7 +92,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
     implementation("com.h2database:h2:1.4.200")
     implementation("mysql:mysql-connector-java:8.0.19")
-    implementation("org.mongodb:mongo-java-driver:3.12.1")
+    implementation("org.mongodb:mongo-java-driver:3.12.3")
 
     //mongodb
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")

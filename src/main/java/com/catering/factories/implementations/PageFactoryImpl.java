@@ -30,13 +30,9 @@ public class PageFactoryImpl implements PageFactory {
      * @return Sort Direction or null if value was invalid
      */
     private Sort.Direction getDirection(PageDataRequest.SORT_DIRECTION direction) {
-        switch (direction) {
-            case ASC:
-                return Sort.Direction.ASC;
-            case DESC:
-                return Sort.Direction.DESC;
-            default:
-                return null;
-        }
+        return switch (direction) {
+            case ASC -> Sort.Direction.ASC;
+            case DESC -> Sort.Direction.DESC;
+        };
     }
 }
