@@ -50,7 +50,7 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @PreAuthorize("hasRole('MY_DATA')")
-    @GraphQLComplexity("180 + childScore")
+    // @GraphQLComplexity("180 + childScore")
     @GraphQLQuery(name = "quotationPage", description = "Page all quotations")
     public Page<Quotation> pageMine(@GraphQLNonNull @GraphQLArgument(name = "pageDataRequest", description = "Filter, limit and sort data") PageDataRequest pageDataRequest) {
         LoggedUser loggedUser = securityService.getLoggedUser();
@@ -137,7 +137,7 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @PreAuthorize("hasRole('MY_DATA')")
-    @GraphQLComplexity("20")
+    // @GraphQLComplexity("20")
     @GraphQLQuery(name = "menus", description = "Menus where this Quotation is present")
     public List<Menu> getMenus(@GraphQLContext Quotation quotation) {
         if (quotation.getMenus() == null) {

@@ -33,7 +33,7 @@ public class DishAuthenticationTest {
 
     private IntegrationTest integrationTest;
 
-    private final String dishQuery = "query {dish(id: 5) {id name}}";
+    private final String dishQuery = "query {dish(id: 55) {id name}}";
 
     @Before
     public void setup() throws Exception {
