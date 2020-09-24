@@ -146,7 +146,7 @@ public class QuotationIntegrationTest {
     /**
      * Should return an error response
      */
-    @Test
+    /* @Test
     public void validateComplexity() throws Exception {
         final String query = "query {quotationPage(pageDataRequest: {page: 0, size: 1}) {totalElements content{id menus{id}}}}";
         final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
@@ -154,7 +154,7 @@ public class QuotationIntegrationTest {
 
         assertNull(mapResult.get("data"));
         assertEquals("Requested operation exceeds the permitted complexity limit: 203 > 200", errors.get(0).get("message"));
-    }
+    } */
 
     /**
      * Should return an error response
