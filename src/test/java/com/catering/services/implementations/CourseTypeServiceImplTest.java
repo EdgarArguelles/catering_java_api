@@ -6,21 +6,21 @@ import com.catering.models.Dish;
 import com.catering.repositories.CourseTypeRepository;
 import com.catering.repositories.DishRepository;
 import com.catering.services.CourseTypeService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CourseTypeServiceImplTest {
 
@@ -58,12 +58,12 @@ public class CourseTypeServiceImplTest {
     /**
      * Should throw CateringDontFoundException
      */
-    @Test(expected = CateringDontFoundException.class)
+    @Test
     public void findByIdWhenDontFound() {
         final String ID = "id";
         given(courseTypeRepository.findById(ID)).willReturn(Optional.empty());
 
-        courseTypeService.findById(ID);
+        assertThrows(CateringDontFoundException.class, () -> courseTypeService.findById(ID));
     }
 
     /**

@@ -4,21 +4,21 @@ import com.catering.exceptions.CateringDontFoundException;
 import com.catering.models.Dish;
 import com.catering.repositories.DishRepository;
 import com.catering.services.DishService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class DishServiceImplTest {
 
@@ -31,12 +31,12 @@ public class DishServiceImplTest {
     /**
      * Should throw CateringDontFoundException
      */
-    @Test(expected = CateringDontFoundException.class)
+    @Test
     public void findByIdWhenDontFound() {
         final String ID = "id";
         given(dishRepository.findById(ID)).willReturn(Optional.empty());
 
-        dishService.findById(ID);
+        assertThrows(CateringDontFoundException.class, () -> dishService.findById(ID));
     }
 
     /**

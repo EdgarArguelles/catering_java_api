@@ -11,9 +11,9 @@ import com.catering.repositories.QuotationRepository;
 import com.catering.security.pojos.LoggedUser;
 import com.catering.security.services.SecurityService;
 import com.catering.services.QuotationService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Collections;
@@ -32,12 +32,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class QuotationServiceImplTest {
 
@@ -62,7 +62,7 @@ public class QuotationServiceImplTest {
     @MockBean
     private PageFactory pageFactory;
 
-    @Before
+    @BeforeEach
     public void setup() {
         final LoggedUser user = new LoggedUser();
         user.setPermissions(Set.of("MY_DATA"));
@@ -73,9 +73,9 @@ public class QuotationServiceImplTest {
     /**
      * Should throw ConstraintViolationException when invalid
      */
-    @Test(expected = ConstraintViolationException.class)
+    @Test
     public void pageMineInvalid() {
-        quotationService.pageMine(new PageDataRequest());
+        assertThrows(ConstraintViolationException.class, () -> quotationService.pageMine(new PageDataRequest()));
     }
 
     /**
@@ -130,26 +130,26 @@ public class QuotationServiceImplTest {
     /**
      * Should throw CateringDontFoundException
      */
-    @Test(expected = CateringDontFoundException.class)
+    @Test
     public void findMineByIdWhenDontFoundAllData() {
         final String ID = "id";
         given(securityService.getLoggedUser()).willReturn(new LoggedUser("P1", "FN", "I", "R", Set.of("VIEW_ALL_DATA")));
         given(quotationRepository.findById(ID)).willReturn(Optional.empty());
 
-        quotationService.findMineById(ID);
+        assertThrows(CateringDontFoundException.class, () -> quotationService.findMineById(ID));
     }
 
     /**
      * Should throw CateringDontFoundException
      */
-    @Test(expected = CateringDontFoundException.class)
+    @Test
     public void findMineByIdWhenDontFound() {
         final String ID = "id";
         final Person person = new Person("P1");
         given(securityService.getLoggedUser()).willReturn(new LoggedUser("P1", "R"));
         given(quotationRepository.findByIdAndPerson(ID, person)).willReturn(Optional.empty());
 
-        quotationService.findMineById(ID);
+        assertThrows(CateringDontFoundException.class, () -> quotationService.findMineById(ID));
     }
 
     /**
@@ -198,9 +198,9 @@ public class QuotationServiceImplTest {
     /**
      * Should throw ConstraintViolationException when invalid
      */
-    @Test(expected = ConstraintViolationException.class)
+    @Test
     public void saveInvalid() {
-        quotationService.save(new Quotation());
+        assertThrows(ConstraintViolationException.class, () -> quotationService.save(new Quotation()));
     }
 
     /**
@@ -254,15 +254,15 @@ public class QuotationServiceImplTest {
     /**
      * Should throw ConstraintViolationException when invalid
      */
-    @Test(expected = ConstraintViolationException.class)
+    @Test
     public void updateMineInvalid() {
-        quotationService.updateMine(new Quotation());
+        assertThrows(ConstraintViolationException.class, () -> quotationService.updateMine(new Quotation()));
     }
 
     /**
      * Should throw CateringDontFoundException when quotation doesn't exist
      */
-    @Test(expected = CateringDontFoundException.class)
+    @Test
     public void updateMineDontFound() {
         final String ID = "ID";
         final Quotation quotation = new Quotation("Name 1", 500F, new Person("FAKE"));
@@ -273,7 +273,7 @@ public class QuotationServiceImplTest {
         given(securityService.getLoggedUser()).willReturn(new LoggedUser("P1", "FN", "I", "R", Set.of("VIEW_ALL_DATA", "extra")));
         given(quotationRepository.findByIdAndPerson(ID, person)).willReturn(Optional.empty());
 
-        quotationService.updateMine(quotation);
+        assertThrows(CateringDontFoundException.class, () -> quotationService.updateMine(quotation));
     }
 
     /**
@@ -406,14 +406,14 @@ public class QuotationServiceImplTest {
     /**
      * Should throw CateringDontFoundException when quotation doesn't exist
      */
-    @Test(expected = CateringDontFoundException.class)
+    @Test
     public void deleteMineDontFound() {
         final String ID = "ID";
         final Person person = new Person("P1");
         given(securityService.getLoggedUser()).willReturn(new LoggedUser("P1", "FN", "I", "R", Set.of("VIEW_ALL_DATA", "extra")));
         given(quotationRepository.findByIdAndPerson(ID, person)).willReturn(Optional.empty());
 
-        quotationService.deleteMine(ID);
+        assertThrows(CateringDontFoundException.class, () -> quotationService.deleteMine(ID));
     }
 
     /**
