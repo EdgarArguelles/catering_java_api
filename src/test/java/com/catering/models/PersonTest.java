@@ -3,7 +3,7 @@ package com.catering.models;
 import com.catering.integration_test.IntegrationTest;
 import com.catering.pojos.responses.error.nesteds.NestedError;
 import com.catering.pojos.responses.error.nesteds.ValidationNestedError;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonTest {
 

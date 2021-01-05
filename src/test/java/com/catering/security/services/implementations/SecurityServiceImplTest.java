@@ -10,27 +10,27 @@ import com.catering.security.pojos.LoggedUser;
 import com.catering.security.services.SecurityService;
 import com.catering.security.services.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class SecurityServiceImplTest {
 
@@ -57,12 +57,12 @@ public class SecurityServiceImplTest {
     /**
      * Should throw CateringValidationException when not context
      */
-    @Test(expected = CateringValidationException.class)
-    public void changeRoleNotContext() throws IOException {
+    @Test
+    public void changeRoleNotContext() {
         SecurityContextHolder.getContext().setAuthentication(null);
         final String ROLE_ID = "R1";
 
-        securityService.changeRole(ROLE_ID);
+        assertThrows(CateringValidationException.class, () -> securityService.changeRole(ROLE_ID));
     }
 
     /**

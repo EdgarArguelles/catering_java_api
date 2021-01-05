@@ -3,22 +3,22 @@ package com.catering.integration_test.authentications;
 import com.catering.integration_test.IntegrationTest;
 import com.catering.security.services.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SecurityServiceAuthenticationTest {
@@ -40,7 +40,7 @@ public class SecurityServiceAuthenticationTest {
 
     private final String getAccessCodeQuery = "query {getAccessCode(social: FACEBOOK)}";
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         integrationTest = new IntegrationTest(mvc, mapper, tokenService);
     }

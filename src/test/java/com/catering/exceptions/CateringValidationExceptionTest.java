@@ -1,13 +1,13 @@
 package com.catering.exceptions;
 
 import com.catering.pojos.responses.error.nesteds.NestedError;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class CateringValidationExceptionTest {
 
