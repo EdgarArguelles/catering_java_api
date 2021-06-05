@@ -69,7 +69,7 @@ public class ValidationNestedErrorTest {
 
         assertTrue(nestedError.equals(nestedError));
         assertFalse(nestedError.equals(null));
-        assertFalse(nestedError.equals(new String()));
+        assertFalse(nestedError.equals(new Object()));
     }
 
     /**

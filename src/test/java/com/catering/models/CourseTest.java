@@ -142,7 +142,7 @@ public class CourseTest {
 
         assertTrue(course.equals(course));
         assertFalse(course.equals(null));
-        assertFalse(course.equals(new String()));
+        assertFalse(course.equals(new Object()));
     }
 
     /**
@@ -150,11 +150,14 @@ public class CourseTest {
      */
     @Test
     public void noEqualsID() {
-        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course1.setId("ID");
-        final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course2.setId("ID2");
-        final Course courseNull = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course courseNull = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         courseNull.setId(null);
 
         assertNotEquals(course1, course2);
@@ -167,11 +170,14 @@ public class CourseTest {
      */
     @Test
     public void noEqualsPosition() {
-        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course1.setId("ID");
-        final Course course2 = new Course(6, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course2 = new Course(6, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course2.setId("ID");
-        final Course courseNull = new Course(null, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course courseNull = new Course(null, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         courseNull.setId("ID");
 
         assertNotEquals(course1, course2);
@@ -184,9 +190,11 @@ public class CourseTest {
      */
     @Test
     public void noEqualsType() {
-        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course1.setId("ID");
-        final Course course2 = new Course(5, new CourseType("CT2"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course2 = new Course(5, new CourseType("CT2"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course2.setId("ID");
         final Course courseNull = new Course(5, null, new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
         courseNull.setId("ID");
@@ -201,9 +209,11 @@ public class CourseTest {
      */
     @Test
     public void noEqualsMenu() {
-        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course1.setId("ID");
-        final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M2"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M2"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course2.setId("ID");
         final Course courseNull = new Course(5, new CourseType("CT1"), null, Set.of(new Dish("D1"), new Dish("D2")));
         courseNull.setId("ID");
@@ -218,7 +228,8 @@ public class CourseTest {
      */
     @Test
     public void noEqualsDishes() {
-        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course1.setId("ID");
         final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1")));
         course2.setId("ID");
@@ -235,9 +246,11 @@ public class CourseTest {
      */
     @Test
     public void testEquals() {
-        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course1 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course1.setId("ID");
-        final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M1"), Set.of(new Dish("D1"), new Dish("D2")));
+        final Course course2 = new Course(5, new CourseType("CT1"), new Menu("M1"),
+                Set.of(new Dish("D1"), new Dish("D2")));
         course2.setId("ID");
         final Course courseNull1 = new Course();
         final Course courseNull2 = new Course();
@@ -254,11 +267,9 @@ public class CourseTest {
     @Test
     public void validateWhenNull() {
         final Course c = new Course();
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("dishes", "must not be empty"),
+        final List<NestedError> nestedErrorsExpected = List.of(new ValidationNestedError("dishes", "must not be empty"),
                 new ValidationNestedError("position", "must not be null"),
-                new ValidationNestedError("type", "must not be null")
-        );
+                new ValidationNestedError("type", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(c);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -271,9 +282,8 @@ public class CourseTest {
     @Test
     public void validateWhenEmpty() {
         final Course c = new Course(1, new CourseType(), null, Collections.emptySet());
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("dishes", "must not be empty")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("dishes", "must not be empty"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(c);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -286,9 +296,8 @@ public class CourseTest {
     @Test
     public void validateWhenMin() {
         final Course c = new Course(0, new CourseType(), null, Set.of(new Dish()));
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("position", "must be greater than or equal to 1")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("position", "must be greater than or equal to 1"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(c);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

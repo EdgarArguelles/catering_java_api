@@ -13,9 +13,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
@@ -49,10 +49,11 @@ public class CourseTypeAuthenticationTest {
      */
     @Test
     public void activeCourseTypesNotToken() throws Exception {
-        final Map mapResult = integrationTest.performGraphQL(activeCourseTypesQuery, null);
-        final Map<String, List> data = (Map) mapResult.get("data");
-        final List<Map> activeCourseTypes = data.get("activeCourseTypes");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(activeCourseTypesQuery, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final Object activeCourseTypes = data.get("activeCourseTypes");
 
+        assertNotNull(activeCourseTypes);
         assertNull(mapResult.get("errors"));
     }
 
@@ -69,10 +70,12 @@ public class CourseTypeAuthenticationTest {
      */
     @Test
     public void activeCourseTypesNotPermission() throws Exception {
-        final Map mapResult = integrationTest.performGraphQL(activeCourseTypesQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
-        final Map<String, List> data = (Map) mapResult.get("data");
-        final List<Map> activeCourseTypes = data.get("activeCourseTypes");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(activeCourseTypesQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final Object activeCourseTypes = data.get("activeCourseTypes");
 
+        assertNotNull(activeCourseTypes);
         assertNull(mapResult.get("errors"));
     }
 
@@ -81,7 +84,7 @@ public class CourseTypeAuthenticationTest {
      */
     @Test
     public void courseTypeNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQL(courseTypeQuery, "Data don't found.", null);
+        final Map<String, Object> data = integrationTest.failGraphQL(courseTypeQuery, "Data don't found.", null);
 
         assertNull(data.get("courseType"));
     }
@@ -99,7 +102,8 @@ public class CourseTypeAuthenticationTest {
      */
     @Test
     public void courseTypeNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQL(courseTypeQuery, "Data don't found.", IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQL(courseTypeQuery, "Data don't found.",
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("courseType"));
     }

@@ -142,7 +142,7 @@ public class MenuTest {
 
         assertTrue(menu.equals(menu));
         assertFalse(menu.equals(null));
-        assertFalse(menu.equals(new String()));
+        assertFalse(menu.equals(new Object()));
     }
 
     /**
@@ -274,8 +274,7 @@ public class MenuTest {
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("courses", "must not be empty"),
                 new ValidationNestedError("name", "must not be null"),
-                new ValidationNestedError("quantity", "must not be null")
-        );
+                new ValidationNestedError("quantity", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(m);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -291,8 +290,7 @@ public class MenuTest {
         m.setCourses(Collections.emptyList());
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("courses", "must not be empty"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(m);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -308,9 +306,8 @@ public class MenuTest {
         IntStream.range(0, 256).forEach(i -> longText.append("a"));
         final Menu m = new Menu(longText.toString(), 1, null);
         m.setCourses(List.of(new Course(1, new CourseType(), null, Set.of(new Dish()))));
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(m);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -324,9 +321,8 @@ public class MenuTest {
     public void validateWhenMin() {
         final Menu m = new Menu("a", 0, null);
         m.setCourses(List.of(new Course(1, new CourseType(), null, Set.of(new Dish()))));
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("quantity", "must be greater than or equal to 1")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("quantity", "must be greater than or equal to 1"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(m);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -343,8 +339,7 @@ public class MenuTest {
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("courses[0].dishes", "must not be empty"),
                 new ValidationNestedError("courses[0].position", "must not be null"),
-                new ValidationNestedError("courses[0].type", "must not be null")
-        );
+                new ValidationNestedError("courses[0].type", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(m);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

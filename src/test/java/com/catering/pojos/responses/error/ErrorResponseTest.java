@@ -70,7 +70,8 @@ public class ErrorResponseTest {
     public void constructorComplete() {
         final String MESSAGE = "test";
         final String DEV_MESSAGE = "dev test";
-        final List<NestedError> NESTED_ERRORS = List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2"));
+        final List<NestedError> NESTED_ERRORS = List.of(new ValidationNestedError("F", "M"),
+                new ValidationNestedError("F2", "M2"));
         final ErrorResponse responseExpected = new ErrorResponse(MESSAGE, DEV_MESSAGE, NESTED_ERRORS);
 
         final ErrorResponse responseResult = new ErrorResponse(MESSAGE, DEV_MESSAGE, NESTED_ERRORS);
@@ -87,7 +88,8 @@ public class ErrorResponseTest {
     public void serialize() throws IOException {
         final String MESSAGE = "test";
         final String DEV_MESSAGE = "dev test";
-        final List<NestedError> NESTED_ERRORS = List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2"));
+        final List<NestedError> NESTED_ERRORS = List.of(new ValidationNestedError("F", "M"),
+                new ValidationNestedError("F2", "M2"));
         final ErrorResponse responseExpected = new ErrorResponse(MESSAGE, DEV_MESSAGE, NESTED_ERRORS);
 
         final String json = mapper.writeValueAsString(responseExpected);
@@ -125,7 +127,7 @@ public class ErrorResponseTest {
 
         assertTrue(response.equals(response));
         assertFalse(response.equals(null));
-        assertFalse(response.equals(new String()));
+        assertFalse(response.equals(new Object()));
         assertTrue(error.equals(error));
         assertFalse(error.equals(null));
         assertFalse(error.equals(new String()));
@@ -150,9 +152,12 @@ public class ErrorResponseTest {
      */
     @Test
     public void noEqualsMessage() {
-        final ErrorResponse response1 = new ErrorResponse("M", "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
-        final ErrorResponse response2 = new ErrorResponse("M1", "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
-        final ErrorResponse responseNull = new ErrorResponse(null, "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response1 = new ErrorResponse("M", "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response2 = new ErrorResponse("M1", "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse responseNull = new ErrorResponse(null, "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
 
         assertNotEquals(response1, response2);
         assertNotEquals(response1, responseNull);
@@ -164,9 +169,12 @@ public class ErrorResponseTest {
      */
     @Test
     public void noEqualsDevMessage() {
-        final ErrorResponse response1 = new ErrorResponse("M", "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
-        final ErrorResponse response2 = new ErrorResponse("M", "DM1", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
-        final ErrorResponse responseNull = new ErrorResponse("M", null, List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response1 = new ErrorResponse("M", "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response2 = new ErrorResponse("M", "DM1",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse responseNull = new ErrorResponse("M", null,
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
 
         assertNotEquals(response1, response2);
         assertNotEquals(response1, responseNull);
@@ -178,7 +186,8 @@ public class ErrorResponseTest {
      */
     @Test
     public void noEqualsNestedErrors() {
-        final ErrorResponse response1 = new ErrorResponse("M", "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response1 = new ErrorResponse("M", "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
         final ErrorResponse response2 = new ErrorResponse("M", "DM", List.of(new ValidationNestedError("F", "M")));
         final ErrorResponse responseNull = new ErrorResponse("M", "DM", null);
 
@@ -192,8 +201,10 @@ public class ErrorResponseTest {
      */
     @Test
     public void testEquals() {
-        final ErrorResponse response1 = new ErrorResponse("M", "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
-        final ErrorResponse response2 = new ErrorResponse("M", "DM", List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response1 = new ErrorResponse("M", "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
+        final ErrorResponse response2 = new ErrorResponse("M", "DM",
+                List.of(new ValidationNestedError("F", "M"), new ValidationNestedError("F2", "M2")));
         final ErrorResponse responseErrorNull1 = new ErrorResponse(null, null, null);
         final ErrorResponse responseErrorNull2 = new ErrorResponse(null, null, null);
         final ErrorResponse responseNull1 = new ErrorResponse();

@@ -22,12 +22,12 @@ public class InfoCtrl {
     private String API_VERSION;
 
     @GetMapping(value = "/version")
-    public ResponseEntity version() {
+    public ResponseEntity<Map<String, String>> version() {
         return new ResponseEntity<>(Map.of("version", API_VERSION), HttpStatus.OK);
     }
 
     @GetMapping(value = "/environment")
-    public ResponseEntity environment() {
+    public ResponseEntity<Map<String, String[]>> environment() {
         // get spring active profile
         return new ResponseEntity<>(Map.of("environment", env.getActiveProfiles()), HttpStatus.OK);
     }

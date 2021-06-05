@@ -45,7 +45,7 @@ public class DishAuthenticationTest {
      */
     @Test
     public void dishNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQL(dishQuery, "Data don't found.", null);
+        final Map<String, Object> data = integrationTest.failGraphQL(dishQuery, "Data don't found.", null);
 
         assertNull(data.get("dish"));
     }
@@ -63,7 +63,8 @@ public class DishAuthenticationTest {
      */
     @Test
     public void dishNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQL(dishQuery, "Data don't found.", IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQL(dishQuery, "Data don't found.",
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("dish"));
     }

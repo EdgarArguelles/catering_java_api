@@ -59,7 +59,7 @@ public class VersionTest {
 
         assertTrue(version.equals(version));
         assertFalse(version.equals(null));
-        assertFalse(version.equals(new String()));
+        assertFalse(version.equals(new Object()));
     }
 
     /**

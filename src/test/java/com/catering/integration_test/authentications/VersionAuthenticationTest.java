@@ -51,7 +51,7 @@ public class VersionAuthenticationTest {
      */
     @Test
     public void versionNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQL(versionQuery, "Data don't found.", null);
+        final Map<String, Object> data = integrationTest.failGraphQL(versionQuery, "Data don't found.", null);
 
         assertNull(data.get("version"));
     }
@@ -69,7 +69,8 @@ public class VersionAuthenticationTest {
      */
     @Test
     public void versionNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQL(versionQuery, "Data don't found.", IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQL(versionQuery, "Data don't found.",
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("version"));
     }

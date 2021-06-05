@@ -105,7 +105,7 @@ public class CategoryTest {
 
         assertTrue(category.equals(category));
         assertFalse(category.equals(null));
-        assertFalse(category.equals(new String()));
+        assertFalse(category.equals(new Object()));
     }
 
     /**

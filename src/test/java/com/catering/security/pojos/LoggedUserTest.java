@@ -105,7 +105,7 @@ public class LoggedUserTest {
 
         assertTrue(user.equals(user));
         assertFalse(user.equals(null));
-        assertFalse(user.equals(new String()));
+        assertFalse(user.equals(new Object()));
     }
 
     /**

@@ -173,7 +173,7 @@ public class AuthProviderTest {
 
         assertTrue(authProvider.equals(authProvider));
         assertFalse(authProvider.equals(null));
-        assertFalse(authProvider.equals(new String()));
+        assertFalse(authProvider.equals(new Object()));
     }
 
     /**
@@ -344,8 +344,7 @@ public class AuthProviderTest {
         final AuthProvider a = new AuthProvider();
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "must not be null"),
-                new ValidationNestedError("name", "must not be null")
-        );
+                new ValidationNestedError("name", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -363,8 +362,7 @@ public class AuthProviderTest {
                 new ValidationNestedError("authKey", "size must be between 1 and 255"),
                 new ValidationNestedError("authSecret", "size must be between 1 and 255"),
                 new ValidationNestedError("description", "size must be between 1 and 255"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -378,14 +376,14 @@ public class AuthProviderTest {
     public void validateWhenMax() {
         final StringBuffer longText = new StringBuffer();
         IntStream.range(0, 256).forEach(i -> longText.append("a"));
-        final AuthProvider a = new AuthProvider(longText.toString(), longText.toString(), longText.toString(), longText.toString(), longText.toString());
+        final AuthProvider a = new AuthProvider(longText.toString(), longText.toString(), longText.toString(),
+                longText.toString(), longText.toString());
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("accessCode", "size must be between 1 and 255"),
                 new ValidationNestedError("authKey", "size must be between 1 and 255"),
                 new ValidationNestedError("authSecret", "size must be between 1 and 255"),
                 new ValidationNestedError("description", "size must be between 1 and 255"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

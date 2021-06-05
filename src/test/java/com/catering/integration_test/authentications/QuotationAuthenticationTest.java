@@ -53,7 +53,7 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void quotationPageNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(quotationPageQuery, null);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(quotationPageQuery, null);
 
         assertNull(data.get("quotationPage"));
     }
@@ -71,7 +71,8 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void quotationPageNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(quotationPageQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(quotationPageQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("quotationPage"));
     }
@@ -81,7 +82,7 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void quotationNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(quotationQuery, null);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(quotationQuery, null);
 
         assertNull(data.get("quotation"));
     }
@@ -99,7 +100,8 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void quotationNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(quotationQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(quotationQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("quotation"));
     }
@@ -109,7 +111,7 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void createQuotationNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(createQuotationQuery, null);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(createQuotationQuery, null);
 
         assertNull(data.get("createQuotation"));
     }
@@ -127,7 +129,8 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void createQuotationNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(createQuotationQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(createQuotationQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("createQuotation"));
     }
@@ -137,7 +140,7 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void updateQuotationNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(updateQuotationQuery, null);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(updateQuotationQuery, null);
 
         assertNull(data.get("updateQuotation"));
     }
@@ -155,7 +158,8 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void updateQuotationNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(updateQuotationQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(updateQuotationQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("updateQuotation"));
     }
@@ -165,7 +169,7 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void deleteQuotationNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(deleteQuotationQuery, null);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(deleteQuotationQuery, null);
 
         assertNull(data.get("deleteQuotation"));
     }
@@ -183,7 +187,8 @@ public class QuotationAuthenticationTest {
      */
     @Test
     public void deleteQuotationNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQLAccessDenied(deleteQuotationQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQLAccessDenied(deleteQuotationQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("deleteQuotation"));
     }

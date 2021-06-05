@@ -69,7 +69,8 @@ public class VersionIntegrationTest {
     @BeforeEach
     public void setup() throws Exception {
         integrationTest = new IntegrationTest(mvc, mapper, tokenService);
-        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository, roleRepository, dishRepository, courseTypeRepository, categoryRepository);
+        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository,
+                roleRepository, dishRepository, courseTypeRepository, categoryRepository);
 
         dbVersions = List.of(new Version(1L), new Version(2L));
         versionRepository.deleteAll();
@@ -82,9 +83,9 @@ public class VersionIntegrationTest {
     @Test
     public void version() throws Exception {
         final String query = "query {version {version}}";
-        final Map mapResult = integrationTest.performGraphQL(query, null);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map version = data.get("version");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var version = (Map<String, Object>) data.get("version");
 
         assertNull(mapResult.get("errors"));
         assertEquals(1, version.get("version"));

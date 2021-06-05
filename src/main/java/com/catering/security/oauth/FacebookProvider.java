@@ -40,8 +40,9 @@ public class FacebookProvider implements OAuthProvider {
     public String getAccessCode() {
         try {
             String accessCode = getAuthProvider().getAccessCode();
-            Map body = new RestTemplate().getForObject("https://graph.facebook.com/v4.0/me/accounts?access_token=" + accessCode, Map.class);
-            List<LinkedHashMap> data = (List<LinkedHashMap>) body.get("data");
+            Map<String, Object> body = new RestTemplate()
+                    .getForObject("https://graph.facebook.com/v4.0/me/accounts?access_token=" + accessCode, Map.class);
+            var data = (List<LinkedHashMap<String, Object>>) body.get("data");
             return data.get(0).get("access_token").toString();
         } catch (Exception e) {
             return null;
@@ -52,9 +53,10 @@ public class FacebookProvider implements OAuthProvider {
     public String getAuthorizeUrl(String callback, String state) {
         OAuth2Parameters oAuth2Parameters = new OAuth2Parameters();
         oAuth2Parameters.setRedirectUri(callback);
-        //scope could be email,user_birthday,user_gender,user_friends, etc
-        //but facebook will warn users your application is trying to access sensitive information or post for you
-        //oAuth2Parameters.setScope("email,user_birthday,user_gender");
+        // scope could be email,user_birthday,user_gender,user_friends, etc
+        // but facebook will warn users your application is trying to access sensitive
+        // information or post for you
+        // oAuth2Parameters.setScope("email,user_birthday,user_gender");
         oAuth2Parameters.setScope("email");
         oAuth2Parameters.setState(state);
         return getOAuthOperations().buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, oAuth2Parameters);

@@ -45,7 +45,8 @@ public class GraphQLExceptionsHandlerTest {
         final ExecutionContext executionContextMock = mock(ExecutionContext.class);
         final ExecutionPath pathMock = mock(ExecutionPath.class);
         final Throwable exception = new CateringDontFoundException("error");
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(executionContextMock, null, null, null, null, pathMock, exception);
+        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
+                executionContextMock, null, null, null, null, pathMock, exception);
         final CateringException exceptionExpected = new CateringDontFoundException("error");
         exceptionExpected.setPath(path);
         when(pathMock.toList()).thenReturn(path);
@@ -70,7 +71,8 @@ public class GraphQLExceptionsHandlerTest {
         final ExecutionContext executionContextMock = mock(ExecutionContext.class);
         final ExecutionPath pathMock = mock(ExecutionPath.class);
         final Throwable exception = new RuntimeException("error");
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(executionContextMock, null, null, null, null, pathMock, exception);
+        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
+                executionContextMock, null, null, null, null, pathMock, exception);
         final CateringException exceptionExpected = new CateringInternalException("An error has occurred.");
         exceptionExpected.setPath(path);
         exceptionExpected.setDevMessage("error");
@@ -96,7 +98,8 @@ public class GraphQLExceptionsHandlerTest {
         final ExecutionContext executionContextMock = mock(ExecutionContext.class);
         final ExecutionPath pathMock = mock(ExecutionPath.class);
         final Throwable exception = new AccessDeniedException("error");
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(executionContextMock, null, null, null, null, pathMock, exception);
+        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
+                executionContextMock, null, null, null, null, pathMock, exception);
         final CateringException exceptionExpected = new CateringAuthenticationException("Access is denied.");
         exceptionExpected.setPath(path);
         exceptionExpected.setDevMessage("error");
@@ -118,7 +121,7 @@ public class GraphQLExceptionsHandlerTest {
      */
     @Test
     public void acceptCateringValidationException() {
-        final ConstraintViolation violation1Mock = mock(ConstraintViolation.class);
+        final var violation1Mock = mock(ConstraintViolation.class);
         final Path path1Mock = mock(Path.class);
         when(path1Mock.toString()).thenReturn("test.test.username");
         when(violation1Mock.getPropertyPath()).thenReturn(path1Mock);
@@ -132,8 +135,10 @@ public class GraphQLExceptionsHandlerTest {
         final List<Object> path = List.of("test 1", "test 2");
         final ExecutionContext executionContextMock = mock(ExecutionContext.class);
         final ExecutionPath pathMock = mock(ExecutionPath.class);
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(executionContextMock, null, null, null, null, pathMock, exceptionMock);
-        final CateringException exceptionExpected = new CateringValidationException("Some data aren't valid.", nestedErrors);
+        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
+                executionContextMock, null, null, null, null, pathMock, exceptionMock);
+        final CateringException exceptionExpected = new CateringValidationException("Some data aren't valid.",
+                nestedErrors);
         exceptionExpected.setPath(path);
         exceptionExpected.setDevMessage("error");
         when(pathMock.toList()).thenReturn(path);

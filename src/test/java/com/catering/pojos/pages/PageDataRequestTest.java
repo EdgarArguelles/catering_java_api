@@ -78,7 +78,8 @@ public class PageDataRequestTest {
     @Test
     public void JsonNotIncludeNull() throws JsonProcessingException {
         final PageDataRequest pageDataRequest = new PageDataRequest(1, 2, null, null);
-        final PageDataRequest pageDataRequestFull = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A"));
+        final PageDataRequest pageDataRequestFull = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A"));
 
         final String json = mapper.writeValueAsString(pageDataRequest);
         final String jsonFull = mapper.writeValueAsString(pageDataRequestFull);
@@ -98,7 +99,7 @@ public class PageDataRequestTest {
 
         assertTrue(pageDataRequest.equals(pageDataRequest));
         assertFalse(pageDataRequest.equals(null));
-        assertFalse(pageDataRequest.equals(new String()));
+        assertFalse(pageDataRequest.equals(new Object()));
     }
 
     /**
@@ -106,9 +107,12 @@ public class PageDataRequestTest {
      */
     @Test
     public void noEqualsPage() {
-        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequest2 = new PageDataRequest(11, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequestNull = new PageDataRequest(null, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
+        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequest2 = new PageDataRequest(11, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequestNull = new PageDataRequest(null, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
 
         assertNotEquals(pageDataRequest1, pageDataRequest2);
         assertNotEquals(pageDataRequest1, pageDataRequestNull);
@@ -120,9 +124,12 @@ public class PageDataRequestTest {
      */
     @Test
     public void noEqualsSize() {
-        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 21, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequestNull = new PageDataRequest(1, null, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
+        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 21, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequestNull = new PageDataRequest(1, null, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
 
         assertNotEquals(pageDataRequest1, pageDataRequest2);
         assertNotEquals(pageDataRequest1, pageDataRequestNull);
@@ -134,8 +141,10 @@ public class PageDataRequestTest {
      */
     @Test
     public void noEqualsDirection() {
-        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.DESC, List.of("A", "B"));
+        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.DESC,
+                List.of("A", "B"));
         final PageDataRequest pageDataRequestNull = new PageDataRequest(1, 2, null, List.of("A", "B"));
 
         assertNotEquals(pageDataRequest1, pageDataRequest2);
@@ -148,8 +157,10 @@ public class PageDataRequestTest {
      */
     @Test
     public void noEqualsSort() {
-        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A"));
+        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A"));
         final PageDataRequest pageDataRequestNull = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, null);
 
         assertNotEquals(pageDataRequest1, pageDataRequest2);
@@ -162,8 +173,10 @@ public class PageDataRequestTest {
      */
     @Test
     public void testEquals() {
-        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
-        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC, List.of("A", "B"));
+        final PageDataRequest pageDataRequest1 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
+        final PageDataRequest pageDataRequest2 = new PageDataRequest(1, 2, PageDataRequest.SORT_DIRECTION.ASC,
+                List.of("A", "B"));
         final PageDataRequest pageDataRequestNull1 = new PageDataRequest();
         final PageDataRequest pageDataRequestNull2 = new PageDataRequest();
 
@@ -179,10 +192,8 @@ public class PageDataRequestTest {
     @Test
     public void validateWhenNull() {
         final PageDataRequest p = new PageDataRequest();
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("page", "must not be null"),
-                new ValidationNestedError("size", "must not be null")
-        );
+        final List<NestedError> nestedErrorsExpected = List.of(new ValidationNestedError("page", "must not be null"),
+                new ValidationNestedError("size", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -195,9 +206,8 @@ public class PageDataRequestTest {
     @Test
     public void validateWhenMax() {
         final PageDataRequest p = new PageDataRequest(0, 6, PageDataRequest.SORT_DIRECTION.ASC, null);
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("size", "must be less than or equal to 5")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("size", "must be less than or equal to 5"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -212,8 +222,7 @@ public class PageDataRequestTest {
         final PageDataRequest p = new PageDataRequest(-1, 0, PageDataRequest.SORT_DIRECTION.ASC, null);
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("page", "must be greater than or equal to 0"),
-                new ValidationNestedError("size", "must be greater than or equal to 1")
-        );
+                new ValidationNestedError("size", "must be greater than or equal to 1"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

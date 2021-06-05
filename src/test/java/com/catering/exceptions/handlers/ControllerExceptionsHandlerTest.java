@@ -29,7 +29,7 @@ public class ControllerExceptionsHandlerTest {
         final Exception exception = new RuntimeException("test");
         final ErrorResponse errorResponseExpected = new ErrorResponse("An error has occurred.", "test", null);
 
-        final ResponseEntity responseResult = controllerExceptionsHandler.handleException(exception);
+        final ResponseEntity<ErrorResponse> responseResult = controllerExceptionsHandler.handleException(exception);
         final ErrorResponse errorResponse = (ErrorResponse) responseResult.getBody();
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseResult.getStatusCode());
@@ -45,7 +45,8 @@ public class ControllerExceptionsHandlerTest {
         final Exception exception = new AccessDeniedException("test");
         final ErrorResponse errorResponseExpected = new ErrorResponse("Access is denied.", null, null);
 
-        final ResponseEntity responseResult = controllerExceptionsHandler.handleAccessDeniedException(exception);
+        final ResponseEntity<ErrorResponse> responseResult = controllerExceptionsHandler
+                .handleAccessDeniedException(exception);
         final ErrorResponse errorResponse = (ErrorResponse) responseResult.getBody();
 
         assertEquals(HttpStatus.FORBIDDEN, responseResult.getStatusCode());
@@ -61,7 +62,8 @@ public class ControllerExceptionsHandlerTest {
         final Exception exception = new ProviderNotFoundException("test");
         final ErrorResponse errorResponseExpected = new ErrorResponse("User is not authenticated.", null, null);
 
-        final ResponseEntity responseResult = controllerExceptionsHandler.handleProviderNotFoundException(exception);
+        final ResponseEntity<ErrorResponse> responseResult = controllerExceptionsHandler
+                .handleProviderNotFoundException(exception);
         final ErrorResponse errorResponse = (ErrorResponse) responseResult.getBody();
 
         assertEquals(HttpStatus.UNAUTHORIZED, responseResult.getStatusCode());

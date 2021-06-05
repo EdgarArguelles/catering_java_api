@@ -66,13 +66,11 @@ public class CourseTypeIntegrationTest {
     @BeforeEach
     public void setup() throws Exception {
         integrationTest = new IntegrationTest(mvc, mapper, tokenService);
-        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository, roleRepository, dishRepository, courseTypeRepository, categoryRepository);
+        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository,
+                roleRepository, dishRepository, courseTypeRepository, categoryRepository);
 
-        dbCourseTypes = List.of(
-                new CourseType("N0", "P0", 0, 0),
-                new CourseType("N1", "P1", 1, 1),
-                new CourseType("N2", "P2", 2, 1)
-        );
+        dbCourseTypes = List.of(new CourseType("N0", "P0", 0, 0), new CourseType("N1", "P1", 1, 1),
+                new CourseType("N2", "P2", 2, 1));
         courseTypeRepository.saveAll(dbCourseTypes);
 
         final List<Dish> dbDishes = List.of(new Dish("Dish 1", "D1", "P1", 5F, 1, dbCourseTypes.get(1), null));
@@ -85,8 +83,8 @@ public class CourseTypeIntegrationTest {
     @Test
     public void validateGraphQLIgnore() throws Exception {
         final String query = "query {courseType(id: 1) {id name courses allowedDishes}}";
-        final Map mapResult = integrationTest.performGraphQL(query, null);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, null);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Field 'courses' in type 'CourseType' is undefined"));
@@ -99,10 +97,10 @@ public class CourseTypeIntegrationTest {
     @Test
     public void activeCourseTypes() throws Exception {
         final String query = "query {activeCourseTypes {id name activeDishes{id name}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, null);
-        final Map<String, List> data = (Map) mapResult.get("data");
-        final List<Map> activeCourseTypes = data.get("activeCourseTypes");
-        final List<Map> activeDishes = (List) activeCourseTypes.get(0).get("activeDishes");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var activeCourseTypes = (List<Map<String, Object>>) data.get("activeCourseTypes");
+        final var activeDishes = (List<Map<String, Object>>) activeCourseTypes.get(0).get("activeDishes");
 
         assertNull(mapResult.get("errors"));
         assertEquals(2, activeCourseTypes.size());
@@ -117,8 +115,8 @@ public class CourseTypeIntegrationTest {
     @Test
     public void courseTypeNotID() throws Exception {
         final String query = "query {courseType {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, null);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, null);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument id"));
@@ -130,11 +128,11 @@ public class CourseTypeIntegrationTest {
     @Test
     public void courseTypeNotFound() throws Exception {
         final String query = "query {courseType(id: 123456) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, null);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("courseType"));
         assertEquals(404, extensions.get("errorCode"));
@@ -147,9 +145,9 @@ public class CourseTypeIntegrationTest {
     @Test
     public void courseType() throws Exception {
         final String query = "query {courseType(id: " + dbCourseTypes.get(0).getId() + ") {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, null);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map courseType = data.get("courseType");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var courseType = (Map<String, Object>) data.get("courseType");
 
         assertNull(mapResult.get("errors"));
         assertEquals("N0", courseType.get("name"));

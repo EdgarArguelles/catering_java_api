@@ -201,7 +201,7 @@ public class DishTest {
 
         assertTrue(dish.equals(dish));
         assertFalse(dish.equals(null));
-        assertFalse(dish.equals(new String()));
+        assertFalse(dish.equals(new Object()));
     }
 
     /**
@@ -209,13 +209,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsID() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID2");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId(null);
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -229,13 +232,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsName() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N2", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N2", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish(null, "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish(null, "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -249,13 +255,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsDescription() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec2", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec2", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish("N", null, "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", null, "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -269,13 +278,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsPicture() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic2", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic2", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish("N", "Dec", null, 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", "Dec", null, 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -289,13 +301,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsPrice() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic", 51.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic", 51.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish("N", "Dec", "Pic", null, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", "Dec", "Pic", null, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -309,13 +324,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsStatus() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 2, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 2, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, null, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, null, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -329,13 +347,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsCourseType() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT2"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT2"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, 1, null, Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, 1, null,
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(List.of(new Course("C1"), new Course("C2")));
 
@@ -349,7 +370,8 @@ public class DishTest {
      */
     @Test
     public void noEqualsCategories() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
         final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1")));
@@ -369,13 +391,16 @@ public class DishTest {
      */
     @Test
     public void noEqualsCourses() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1")));
-        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dishNull = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dishNull.setId("ID");
         dishNull.setCourses(null);
 
@@ -389,10 +414,12 @@ public class DishTest {
      */
     @Test
     public void testEquals() {
-        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish1 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish1.setId("ID");
         dish1.setCourses(List.of(new Course("C1"), new Course("C2")));
-        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"), Set.of(new Category("Cat1"), new Category("Cat2")));
+        final Dish dish2 = new Dish("N", "Dec", "Pic", 50.5F, 1, new CourseType("CT1"),
+                Set.of(new Category("Cat1"), new Category("Cat2")));
         dish2.setId("ID");
         dish2.setCourses(List.of(new Course("C1"), new Course("C2")));
         final Dish dishNull1 = new Dish();

@@ -167,7 +167,7 @@ public class CourseTypeTest {
 
         assertTrue(courseType.equals(courseType));
         assertFalse(courseType.equals(null));
-        assertFalse(courseType.equals(new String()));
+        assertFalse(courseType.equals(new Object()));
     }
 
     /**

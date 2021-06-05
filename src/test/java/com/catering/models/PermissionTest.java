@@ -125,7 +125,7 @@ public class PermissionTest {
 
         assertTrue(permission.equals(permission));
         assertFalse(permission.equals(null));
-        assertFalse(permission.equals(new String()));
+        assertFalse(permission.equals(new Object()));
     }
 
     /**
@@ -236,8 +236,7 @@ public class PermissionTest {
         final Permission p = new Permission();
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "must not be null"),
-                new ValidationNestedError("name", "must not be null")
-        );
+                new ValidationNestedError("name", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -252,8 +251,7 @@ public class PermissionTest {
         final Permission p = new Permission("", "");
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "size must be between 1 and 255"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -270,8 +268,7 @@ public class PermissionTest {
         final Permission p = new Permission(longText.toString(), longText.toString());
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "size must be between 1 and 255"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

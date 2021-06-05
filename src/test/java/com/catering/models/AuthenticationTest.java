@@ -130,7 +130,8 @@ public class AuthenticationTest {
         final Authentication authentication = new Authentication(ID);
         authentication.setUsername(USERNAME);
 
-        assertEquals("Authentication(super=Model(id=" + ID + "), username=" + USERNAME + ")", authentication.toString());
+        assertEquals("Authentication(super=Model(id=" + ID + "), username=" + USERNAME + ")",
+                authentication.toString());
     }
 
     /**
@@ -142,7 +143,7 @@ public class AuthenticationTest {
 
         assertTrue(authentication.equals(authentication));
         assertFalse(authentication.equals(null));
-        assertFalse(authentication.equals(new String()));
+        assertFalse(authentication.equals(new Object()));
     }
 
     /**
@@ -154,7 +155,8 @@ public class AuthenticationTest {
         authentication1.setId("ID");
         final Authentication authentication2 = new Authentication("U", "P", new AuthProvider("AP1"), new Person("P1"));
         authentication2.setId("ID2");
-        final Authentication authenticationNull = new Authentication("U", "P", new AuthProvider("AP1"), new Person("P1"));
+        final Authentication authenticationNull = new Authentication("U", "P", new AuthProvider("AP1"),
+                new Person("P1"));
         authenticationNull.setId(null);
 
         assertNotEquals(authentication1, authentication2);
@@ -171,7 +173,8 @@ public class AuthenticationTest {
         authentication1.setId("ID");
         final Authentication authentication2 = new Authentication("U2", "P", new AuthProvider("AP1"), new Person("P1"));
         authentication2.setId("ID");
-        final Authentication authenticationNull = new Authentication(null, "P", new AuthProvider("AP1"), new Person("P1"));
+        final Authentication authenticationNull = new Authentication(null, "P", new AuthProvider("AP1"),
+                new Person("P1"));
         authenticationNull.setId("ID");
 
         assertNotEquals(authentication1, authentication2);
@@ -188,7 +191,8 @@ public class AuthenticationTest {
         authentication1.setId("ID");
         final Authentication authentication2 = new Authentication("U", "P1", new AuthProvider("AP1"), new Person("P1"));
         authentication2.setId("ID");
-        final Authentication authenticationNull = new Authentication("U", null, new AuthProvider("AP1"), new Person("P1"));
+        final Authentication authenticationNull = new Authentication("U", null, new AuthProvider("AP1"),
+                new Person("P1"));
         authenticationNull.setId("ID");
 
         assertNotEquals(authentication1, authentication2);
@@ -257,8 +261,7 @@ public class AuthenticationTest {
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("authProvider", "must not be null"),
                 new ValidationNestedError("person", "must not be null"),
-                new ValidationNestedError("username", "must not be null")
-        );
+                new ValidationNestedError("username", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -273,8 +276,7 @@ public class AuthenticationTest {
         final Authentication a = new Authentication("", "PP", new AuthProvider("AP"), new Person("P"));
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("password", "size must be between 3 and 255"),
-                new ValidationNestedError("username", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("username", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -288,11 +290,11 @@ public class AuthenticationTest {
     public void validateWhenMax() {
         final StringBuffer longText = new StringBuffer();
         IntStream.range(0, 256).forEach(i -> longText.append("a"));
-        final Authentication a = new Authentication(longText.toString(), longText.toString(), new AuthProvider("AP"), new Person("P"));
+        final Authentication a = new Authentication(longText.toString(), longText.toString(), new AuthProvider("AP"),
+                new Person("P"));
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("password", "size must be between 3 and 255"),
-                new ValidationNestedError("username", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("username", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(a);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
