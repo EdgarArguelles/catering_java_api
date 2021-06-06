@@ -1,6 +1,7 @@
 package com.catering.models;
 
 import io.leangen.graphql.annotations.GraphQLIgnore;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 
@@ -23,21 +24,25 @@ public class CourseType extends Model {
     @Column(nullable = false)
     @Getter
     @Setter
+    @GraphQLQuery(description = "CourseType's Name")
     private String name;
 
     @Column(nullable = false)
     @Getter
     @Setter
+    @GraphQLQuery(description = "CourseType's picture path")
     private String picture;
 
     @Column(nullable = false, columnDefinition = "smallint")
     @Getter
     @Setter
+    @GraphQLQuery(description = "CourseType's position > 0")
     private Integer position;
 
     @Column(nullable = false, columnDefinition = "smallint")
     @Getter
     @Setter
+    @GraphQLQuery(description = "CourseType's status [0 or 1]")
     private Integer status;
 
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)

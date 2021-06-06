@@ -1,137 +1,131 @@
 fragment allQuotationData on Quotation {
+  id
+  createdAt
+  updatedAt
+  name
+  price
+  menus {
     id
     createdAt
     updatedAt
     name
-    price
-    menus {
+    quantity
+    courses {
+      id
+      createdAt
+      updatedAt
+      position
+      type {
         id
-        createdAt
-        updatedAt
         name
-        quantity
-        courses {
-            id
-            createdAt
-            updatedAt
-            position
-            type {
-                id
-                name
-            }
-            dishes {
-                id
-                name
-            }
-        }
+      }
+      dishes {
+        id
+        name
+      }
     }
+  }
 }
 
 query page {
-    quotationPage(
-        pageDataRequest: { page: 0, size: 3, sort: ["name", "id"], direction: DESC }
-    ) {
-        totalElements
-        totalPages
-        content {
-            id
-            name
-            menus {
-                id
-            }
-        }
+  quotationPage(
+    pageDataRequest: { page: 0, size: 3, sort: ["name", "id"], direction: DESC }
+  ) {
+    totalElements
+    totalPages
+    content {
+      id
+      name
+      menus {
+        id
+      }
     }
+  }
 }
 
 query byID {
-    quotation(id: 1) {
-        ...allQuotationData
-    }
+  quotation(id: 1) {
+    ...allQuotationData
+  }
 }
 
 mutation create {
-    createQuotation(
-        quotation: {
-            createdAt: "2000-01-01T00:00:00"
-            name: "Edgar"
-            price: 123.123
-            person: { id: "111" }
-            menus: [
-                {
-                    createdAt: "2000-01-01T00:00:00"
-                    quotation: { id: "222" }
-                    name: "menu 1"
-                    quantity: 2
-                    courses: [
-                        {
-                            createdAt: "2000-01-01T00:00:00"
-                            menu: { id: "333" }
-                            position: 1
-                            type: { id: "1" }
-                            dishes: [{ id: "1" }, { id: "2" }]
-                        }
-                        { position: 2, type: { id: "2" }, dishes: [{ id: "3" }] }
-                    ]
-                }
-                {
-                    name: "menu 2"
-                    quantity: 3
-                    courses: [
-                        {
-                            position: 22
-                            type: { id: "2" }
-                            dishes: [{ id: "3" }, { id: "4" }]
-                        }
-                    ]
-                }
-            ]
+  createQuotation(
+    quotation: {
+      createdAt: "2000-01-01T00:00:00"
+      name: "Edgar"
+      price: 123.123
+      menus: [
+        {
+          createdAt: "2000-01-01T00:00:00"
+          name: "menu 1"
+          quantity: 2
+          courses: [
+            {
+              createdAt: "2000-01-01T00:00:00"
+              position: 1
+              type: { id: "1" }
+              dishes: [{ id: "1" }, { id: "2" }]
+            }
+            { position: 2, type: { id: "2" }, dishes: [{ id: "3" }] }
+          ]
         }
-    ) {
-        ...allQuotationData
+        {
+          name: "menu 2"
+          quantity: 3
+          courses: [
+            {
+              position: 22
+              type: { id: "2" }
+              dishes: [{ id: "3" }, { id: "4" }]
+            }
+          ]
+        }
+      ]
     }
+  ) {
+    ...allQuotationData
+  }
 }
 
 mutation update {
-    updateQuotation(
-        quotation: {
-            id: "1"
-            createdAt: "2000-01-01T00:00:00"
-            name: "Edgar2"
-            price: 123.123
-            person: { id: "111" }
-            menus: [
-                {
-                    id: "1"
-                    createdAt: "2000-01-01T00:00:00"
-                    quotation: { id: "222" }
-                    name: "menu 11"
-                    quantity: 22
-                    courses: [
-                        {
-                            id: "1"
-                            createdAt: "2000-01-01T00:00:00"
-                            menu: { id: "333" }
-                            position: 11
-                            type: { id: "2" }
-                            dishes: [{ id: "3" }]
-                        }
-                        { position: 3, type: { id: "3" }, dishes: [{ id: "4" }] }
-                    ]
-                }
-                {
-                    name: "menu 3"
-                    quantity: 33
-                    courses: [{ position: 220, type: { id: "2" }, dishes: [{ id: "5" }] }]
-                }
-            ]
+  updateQuotation(
+    quotation: {
+      id: "1"
+      createdAt: "2000-01-01T00:00:00"
+      name: "Edgar2"
+      price: 123.123
+      menus: [
+        {
+          id: "1"
+          createdAt: "2000-01-01T00:00:00"
+          name: "menu 11"
+          quantity: 22
+          courses: [
+            {
+              id: "1"
+              createdAt: "2000-01-01T00:00:00"
+              position: 11
+              type: { id: "2" }
+              dishes: [{ id: "3" }]
+            }
+            { position: 3, type: { id: "3" }, dishes: [{ id: "4" }] }
+          ]
         }
-    ) {
-        ...allQuotationData
+        {
+          name: "menu 3"
+          quantity: 33
+          courses: [{ position: 220, type: { id: "2" }, dishes: [{ id: "5" }] }]
+        }
+      ]
     }
+  ) {
+    ...allQuotationData
+  }
 }
 
 mutation delete {
-    deleteQuotation(id: 1) {
-        ...allQuotationData
-    }
+  deleteQuotation(id: 1) {
+    ...allQuotationData
+  }
 }

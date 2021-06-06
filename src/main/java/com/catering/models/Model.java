@@ -1,6 +1,8 @@
 package com.catering.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,16 +22,19 @@ public abstract class Model {
     @Column(columnDefinition = "bigint")
     @Getter
     @Setter
+    @GraphQLQuery(description = "Entity's ID")
     protected String id;
 
     @Column(name = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     @Getter
+    @GraphQLQuery(description = "Creation's Date and Time")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     @Getter
+    @GraphQLQuery(description = "Last edition's Date and Time")
     private LocalDateTime updatedAt;
 
     @PrePersist

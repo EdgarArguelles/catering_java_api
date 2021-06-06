@@ -2,6 +2,7 @@ package com.catering.pojos.pages;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.leangen.graphql.annotations.GraphQLEnumValue;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,25 +23,30 @@ import java.util.List;
 public class PageDataRequest {
 
     public enum SORT_DIRECTION {
-        @GraphQLEnumValue(description = "Sort in ascendant order") ASC,
-        @GraphQLEnumValue(description = "Sort in decedent order") DESC
+        @GraphQLEnumValue(description = "Sort in ascendant order")
+        ASC, @GraphQLEnumValue(description = "Sort in decedent order")
+        DESC
     }
 
     @NotNull
     @Min(0)
     @Getter
+    @GraphQLQuery(description = "Page's number")
     private Integer page;
 
     @NotNull
     @Min(1)
     @Max(5)
     @Getter
+    @GraphQLQuery(description = "Page's size")
     private Integer size;
 
     @Getter
+    @GraphQLQuery(description = "Page's direction [ASC or DESC]")
     private SORT_DIRECTION direction;
 
     @Getter
+    @GraphQLQuery(description = "Page's sort list")
     private List<String> sort;
 
     /**

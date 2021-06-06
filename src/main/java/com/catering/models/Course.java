@@ -1,6 +1,7 @@
 package com.catering.models;
 
 import io.leangen.graphql.annotations.GraphQLIgnore;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -24,6 +25,7 @@ public class Course extends Model {
     @Column(nullable = false, columnDefinition = "smallint")
     @Getter
     @Setter
+    @GraphQLQuery(description = "Course's position > 0")
     private Integer position;
 
     @NotNull
@@ -32,6 +34,7 @@ public class Course extends Model {
     @DBRef // all foreign keys need @DBRef to notify Mongo about relationship and ownership
     @Getter
     @Setter
+    @GraphQLQuery(description = "Course's type")
     private CourseType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,6 +54,7 @@ public class Course extends Model {
     @DBRef // all foreign keys need @DBRef to notify Mongo about relationship and ownership
     @Getter
     @Setter
+    @GraphQLQuery(description = "Course's dishes")
     private Set<Dish> dishes;
 
     public Course(String id) {
