@@ -21,15 +21,12 @@ public class Category extends Model {
     private String name;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @Getter
     @Setter
+    @GraphQLIgnore
     private List<Dish> dishes;
 
     public Category(String name) {
         this.name = name;
-    }
-
-    @GraphQLIgnore
-    public List<Dish> getDishes() {
-        return dishes;
     }
 }

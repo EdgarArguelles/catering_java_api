@@ -13,7 +13,8 @@ import javax.validation.constraints.Size;
 @ToString(callSuper = true, of = "username")
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "authentication", uniqueConstraints = {@UniqueConstraint(columnNames = {"auth_provider_id", "person_id"})})
+@Table(name = "authentication", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "auth_provider_id", "person_id" }) })
 @GraphQLType(description = "Authentication associated with Person and AuthProvider")
 public class Authentication extends Model {
 
@@ -26,7 +27,9 @@ public class Authentication extends Model {
 
     @Size(min = 3, max = 255)
     @Column()
+    @Getter
     @Setter
+    @GraphQLIgnore
     private String password;
 
     @NotNull
@@ -54,10 +57,5 @@ public class Authentication extends Model {
         this.password = password;
         this.authProvider = authProvider;
         this.person = person;
-    }
-
-    @GraphQLIgnore
-    public String getPassword() {
-        return password;
     }
 }

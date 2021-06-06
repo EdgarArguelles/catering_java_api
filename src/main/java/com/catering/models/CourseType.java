@@ -41,11 +41,15 @@ public class CourseType extends Model {
     private Integer status;
 
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
+    @Getter
     @Setter
+    @GraphQLIgnore
     private List<Course> courses;
 
     @OneToMany(mappedBy = "courseType", fetch = FetchType.LAZY)
+    @Getter
     @Setter
+    @GraphQLIgnore
     private List<Dish> allowedDishes;
 
     public CourseType(String id) {
@@ -57,15 +61,5 @@ public class CourseType extends Model {
         this.picture = picture;
         this.position = position;
         this.status = status;
-    }
-
-    @GraphQLIgnore
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    @GraphQLIgnore
-    public List<Dish> getAllowedDishes() {
-        return allowedDishes;
     }
 }

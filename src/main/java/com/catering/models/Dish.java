@@ -50,11 +50,15 @@ public class Dish extends Model {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_type_id", nullable = false)
     @DBRef // all foreign keys need @DBRef to notify Mongo about relationship and ownership
+    @Getter
     @Setter
+    @GraphQLIgnore
     private CourseType courseType;
 
-    // in @ManyToMany the Owner Entity must use Set to notify MySQL that new relational table will have a combine Primary Key
-    // if List is used instead the new relational table won't have a combine Primary key so data could be duplicated
+    // in @ManyToMany the Owner Entity must use Set to notify MySQL that new
+    // relational table will have a combine Primary Key
+    // if List is used instead the new relational table won't have a combine Primary
+    // key so data could be duplicated
     @ManyToMany(fetch = FetchType.LAZY)
     @DBRef // all foreign keys need @DBRef to notify Mongo about relationship and ownership
     @Getter
@@ -62,14 +66,17 @@ public class Dish extends Model {
     private Set<Category> categories;
 
     @ManyToMany(mappedBy = "dishes", fetch = FetchType.LAZY)
+    @Getter
     @Setter
+    @GraphQLIgnore
     private List<Course> courses;
 
     public Dish(String id) {
         this.id = id;
     }
 
-    public Dish(String name, String description, String picture, Float price, Integer status, CourseType courseType, Set<Category> categories) {
+    public Dish(String name, String description, String picture, Float price, Integer status, CourseType courseType,
+            Set<Category> categories) {
         this.name = name;
         this.description = description;
         this.picture = picture;
@@ -77,15 +84,5 @@ public class Dish extends Model {
         this.status = status;
         this.courseType = courseType;
         this.categories = categories;
-    }
-
-    @GraphQLIgnore
-    public CourseType getCourseType() {
-        return courseType;
-    }
-
-    @GraphQLIgnore
-    public List<Course> getCourses() {
-        return courses;
     }
 }

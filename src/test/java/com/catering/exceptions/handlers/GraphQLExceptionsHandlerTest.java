@@ -5,8 +5,8 @@ import com.catering.pojos.responses.error.nesteds.NestedError;
 import com.catering.pojos.responses.error.nesteds.ValidationNestedError;
 import graphql.GraphQLError;
 import graphql.execution.DataFetcherExceptionHandlerParameters;
-import graphql.execution.ExecutionContext;
-import graphql.execution.ExecutionPath;
+import graphql.execution.DataFetcherExceptionHandlerResult;
+import graphql.execution.ResultPath;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -42,24 +42,23 @@ public class GraphQLExceptionsHandlerTest {
     @Test
     public void acceptCateringDontFoundException() {
         final List<Object> path = List.of("test 1", "test 2");
-        final ExecutionContext executionContextMock = mock(ExecutionContext.class);
-        final ExecutionPath pathMock = mock(ExecutionPath.class);
+        final ResultPath pathMock = mock(ResultPath.class);
+        final DataFetcherExceptionHandlerParameters handlerParametersMock = mock(
+                DataFetcherExceptionHandlerParameters.class);
         final Throwable exception = new CateringDontFoundException("error");
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
-                executionContextMock, null, null, null, null, pathMock, exception);
-        final CateringException exceptionExpected = new CateringDontFoundException("error");
-        exceptionExpected.setPath(path);
+        final CateringException cateringException = new CateringDontFoundException("error");
+        cateringException.setPath(path);
+        final List<CateringException> exceptionsExpected = List.of(cateringException);
         when(pathMock.toList()).thenReturn(path);
+        when(handlerParametersMock.getException()).thenReturn(exception);
+        when(handlerParametersMock.getPath()).thenReturn(pathMock);
 
-        graphQLExceptionsHandler.accept(handlerParameters);
+        DataFetcherExceptionHandlerResult result = graphQLExceptionsHandler.onException(handlerParametersMock);
 
-        verify(executionContextMock, times(1)).addError(captor.capture());
-        captor.getAllValues().forEach(value -> {
-            assertNotSame(exceptionExpected, value);
-            assertEquals(exceptionExpected, value);
-            assertEquals(exceptionExpected.getMessage(), value.getMessage());
-            assertEquals(exceptionExpected.getClass().getName(), value.getClass().getName());
-        });
+        assertNotSame(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected.get(0).getMessage(), cateringException.getMessage());
+        assertEquals(exceptionsExpected.get(0).getClass().getName(), cateringException.getClass().getName());
     }
 
     /**
@@ -68,25 +67,24 @@ public class GraphQLExceptionsHandlerTest {
     @Test
     public void acceptCateringInternalException() {
         final List<Object> path = List.of("test 1", "test 2");
-        final ExecutionContext executionContextMock = mock(ExecutionContext.class);
-        final ExecutionPath pathMock = mock(ExecutionPath.class);
+        final ResultPath pathMock = mock(ResultPath.class);
+        final DataFetcherExceptionHandlerParameters handlerParametersMock = mock(
+                DataFetcherExceptionHandlerParameters.class);
         final Throwable exception = new RuntimeException("error");
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
-                executionContextMock, null, null, null, null, pathMock, exception);
-        final CateringException exceptionExpected = new CateringInternalException("An error has occurred.");
-        exceptionExpected.setPath(path);
-        exceptionExpected.setDevMessage("error");
+        final CateringException cateringException = new CateringInternalException("An error has occurred.");
+        cateringException.setPath(path);
+        cateringException.setDevMessage("error");
+        final List<CateringException> exceptionsExpected = List.of(cateringException);
         when(pathMock.toList()).thenReturn(path);
+        when(handlerParametersMock.getException()).thenReturn(exception);
+        when(handlerParametersMock.getPath()).thenReturn(pathMock);
 
-        graphQLExceptionsHandler.accept(handlerParameters);
+        DataFetcherExceptionHandlerResult result = graphQLExceptionsHandler.onException(handlerParametersMock);
 
-        verify(executionContextMock, times(1)).addError(captor.capture());
-        captor.getAllValues().forEach(value -> {
-            assertNotSame(exceptionExpected, value);
-            assertEquals(exceptionExpected, value);
-            assertEquals(exceptionExpected.getMessage(), value.getMessage());
-            assertEquals(exceptionExpected.getClass().getName(), value.getClass().getName());
-        });
+        assertNotSame(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected.get(0).getMessage(), cateringException.getMessage());
+        assertEquals(exceptionsExpected.get(0).getClass().getName(), cateringException.getClass().getName());
     }
 
     /**
@@ -95,25 +93,24 @@ public class GraphQLExceptionsHandlerTest {
     @Test
     public void acceptCateringAuthenticationException() {
         final List<Object> path = List.of("test 1", "test 2");
-        final ExecutionContext executionContextMock = mock(ExecutionContext.class);
-        final ExecutionPath pathMock = mock(ExecutionPath.class);
+        final ResultPath pathMock = mock(ResultPath.class);
+        final DataFetcherExceptionHandlerParameters handlerParametersMock = mock(
+                DataFetcherExceptionHandlerParameters.class);
         final Throwable exception = new AccessDeniedException("error");
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
-                executionContextMock, null, null, null, null, pathMock, exception);
-        final CateringException exceptionExpected = new CateringAuthenticationException("Access is denied.");
-        exceptionExpected.setPath(path);
-        exceptionExpected.setDevMessage("error");
+        final CateringException cateringException = new CateringAuthenticationException("Access is denied.");
+        cateringException.setPath(path);
+        cateringException.setDevMessage("error");
+        final List<CateringException> exceptionsExpected = List.of(cateringException);
         when(pathMock.toList()).thenReturn(path);
+        when(handlerParametersMock.getException()).thenReturn(exception);
+        when(handlerParametersMock.getPath()).thenReturn(pathMock);
 
-        graphQLExceptionsHandler.accept(handlerParameters);
+        DataFetcherExceptionHandlerResult result = graphQLExceptionsHandler.onException(handlerParametersMock);
 
-        verify(executionContextMock, times(1)).addError(captor.capture());
-        captor.getAllValues().forEach(value -> {
-            assertNotSame(exceptionExpected, value);
-            assertEquals(exceptionExpected, value);
-            assertEquals(exceptionExpected.getMessage(), value.getMessage());
-            assertEquals(exceptionExpected.getClass().getName(), value.getClass().getName());
-        });
+        assertNotSame(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected.get(0).getMessage(), cateringException.getMessage());
+        assertEquals(exceptionsExpected.get(0).getClass().getName(), cateringException.getClass().getName());
     }
 
     /**
@@ -123,6 +120,8 @@ public class GraphQLExceptionsHandlerTest {
     public void acceptCateringValidationException() {
         final var violation1Mock = mock(ConstraintViolation.class);
         final Path path1Mock = mock(Path.class);
+        final DataFetcherExceptionHandlerParameters handlerParametersMock = mock(
+                DataFetcherExceptionHandlerParameters.class);
         when(path1Mock.toString()).thenReturn("test.test.username");
         when(violation1Mock.getPropertyPath()).thenReturn(path1Mock);
         when(violation1Mock.getMessage()).thenReturn("error 1");
@@ -133,24 +132,21 @@ public class GraphQLExceptionsHandlerTest {
 
         final List<NestedError> nestedErrors = List.of(new ValidationNestedError("username", "error 1"));
         final List<Object> path = List.of("test 1", "test 2");
-        final ExecutionContext executionContextMock = mock(ExecutionContext.class);
-        final ExecutionPath pathMock = mock(ExecutionPath.class);
-        final DataFetcherExceptionHandlerParameters handlerParameters = new DataFetcherExceptionHandlerParameters(
-                executionContextMock, null, null, null, null, pathMock, exceptionMock);
-        final CateringException exceptionExpected = new CateringValidationException("Some data aren't valid.",
+        final ResultPath pathMock = mock(ResultPath.class);
+        final CateringException cateringException = new CateringValidationException("Some data aren't valid.",
                 nestedErrors);
-        exceptionExpected.setPath(path);
-        exceptionExpected.setDevMessage("error");
+        cateringException.setPath(path);
+        cateringException.setDevMessage("error");
+        final List<CateringException> exceptionsExpected = List.of(cateringException);
         when(pathMock.toList()).thenReturn(path);
+        when(handlerParametersMock.getException()).thenReturn(exceptionMock);
+        when(handlerParametersMock.getPath()).thenReturn(pathMock);
 
-        graphQLExceptionsHandler.accept(handlerParameters);
+        DataFetcherExceptionHandlerResult result = graphQLExceptionsHandler.onException(handlerParametersMock);
 
-        verify(executionContextMock, times(1)).addError(captor.capture());
-        captor.getAllValues().forEach(value -> {
-            assertNotSame(exceptionExpected, value);
-            assertEquals(exceptionExpected, value);
-            assertEquals(exceptionExpected.getMessage(), value.getMessage());
-            assertEquals(exceptionExpected.getClass().getName(), value.getClass().getName());
-        });
+        assertNotSame(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected, result.getErrors());
+        assertEquals(exceptionsExpected.get(0).getMessage(), cateringException.getMessage());
+        assertEquals(exceptionsExpected.get(0).getClass().getName(), cateringException.getClass().getName());
     }
 }

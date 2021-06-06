@@ -38,7 +38,9 @@ public class Menu extends Model {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quotation_id", nullable = false)
     @DBRef // all foreign keys need @DBRef to notify Mongo about relationship and ownership
+    @Getter
     @Setter
+    @GraphQLIgnore
     private Quotation quotation;
 
     // this entity doesn't have the ownership
@@ -57,10 +59,5 @@ public class Menu extends Model {
         this.name = name;
         this.quantity = quantity;
         this.quotation = quotation;
-    }
-
-    @GraphQLIgnore
-    public Quotation getQuotation() {
-        return quotation;
     }
 }

@@ -33,17 +33,23 @@ public class AuthProvider extends Model {
 
     @Size(min = 1, max = 255)
     @Column()
+    @Getter
     @Setter
+    @GraphQLIgnore
     private String authKey;
 
     @Size(min = 1, max = 255)
     @Column()
+    @Getter
     @Setter
+    @GraphQLIgnore
     private String authSecret;
 
     @Size(min = 1, max = 255)
     @Column()
+    @Getter
     @Setter
+    @GraphQLIgnore
     private String accessCode;
 
     @OneToMany(mappedBy = "authProvider", fetch = FetchType.LAZY)
@@ -61,20 +67,5 @@ public class AuthProvider extends Model {
         this.authKey = authKey;
         this.authSecret = authSecret;
         this.accessCode = accessCode;
-    }
-
-    @GraphQLIgnore
-    public String getAuthKey() {
-        return authKey;
-    }
-
-    @GraphQLIgnore
-    public String getAuthSecret() {
-        return authSecret;
-    }
-
-    @GraphQLIgnore
-    public String getAccessCode() {
-        return accessCode;
     }
 }
