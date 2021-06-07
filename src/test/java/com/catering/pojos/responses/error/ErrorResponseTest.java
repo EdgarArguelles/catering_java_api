@@ -29,7 +29,7 @@ public class ErrorResponseTest {
     public void constructorDefault() {
         final ErrorResponse response = new ErrorResponse();
 
-        assertNull(response.getError());
+        assertNull(response.error());
     }
 
     /**
@@ -43,7 +43,7 @@ public class ErrorResponseTest {
         final ErrorResponse responseResult = new ErrorResponse(MESSAGE);
 
         assertNotSame(responseExpected, responseResult);
-        assertNotSame(responseExpected.getError(), responseResult.getError());
+        assertNotSame(responseExpected.error(), responseResult.error());
         assertEquals(responseExpected, responseResult);
     }
 
@@ -59,7 +59,7 @@ public class ErrorResponseTest {
         final ErrorResponse responseResult = new ErrorResponse(MESSAGE, DEV_MESSAGE);
 
         assertNotSame(responseExpected, responseResult);
-        assertNotSame(responseExpected.getError(), responseResult.getError());
+        assertNotSame(responseExpected.error(), responseResult.error());
         assertEquals(responseExpected, responseResult);
     }
 
@@ -77,7 +77,7 @@ public class ErrorResponseTest {
         final ErrorResponse responseResult = new ErrorResponse(MESSAGE, DEV_MESSAGE, NESTED_ERRORS);
 
         assertNotSame(responseExpected, responseResult);
-        assertNotSame(responseExpected.getError(), responseResult.getError());
+        assertNotSame(responseExpected.error(), responseResult.error());
         assertEquals(responseExpected, responseResult);
     }
 
@@ -96,7 +96,7 @@ public class ErrorResponseTest {
         final ErrorResponse responseResult = mapper.readValue(json, ErrorResponse.class);
 
         assertNotSame(responseExpected, responseResult);
-        assertNotSame(responseExpected.getError(), responseResult.getError());
+        assertNotSame(responseExpected.error(), responseResult.error());
         assertEquals(responseExpected, responseResult);
     }
 
@@ -123,7 +123,7 @@ public class ErrorResponseTest {
     @Test
     public void equalsInstance() {
         final ErrorResponse response = new ErrorResponse("test");
-        final Object error = response.getError();
+        final Object error = response.error();
 
         assertTrue(response.equals(response));
         assertFalse(response.equals(null));
@@ -211,10 +211,10 @@ public class ErrorResponseTest {
         final ErrorResponse responseNull2 = new ErrorResponse();
 
         assertNotSame(response1, response2);
-        assertNotSame(response1.getError(), response2.getError());
+        assertNotSame(response1.error(), response2.error());
         assertEquals(response1, response2);
         assertNotSame(responseErrorNull1, responseErrorNull2);
-        assertNotSame(responseErrorNull1.getError(), responseErrorNull2.getError());
+        assertNotSame(responseErrorNull1.error(), responseErrorNull2.error());
         assertEquals(responseErrorNull1, responseErrorNull2);
         assertNotSame(responseNull1, responseNull2);
         assertEquals(responseNull1, responseNull2);

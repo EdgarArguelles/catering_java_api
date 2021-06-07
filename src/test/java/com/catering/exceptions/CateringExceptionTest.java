@@ -63,7 +63,7 @@ public class CateringExceptionTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, extensionsResult.get("errorType"));
         assertEquals(500, extensionsResult.get("errorCode"));
-        assertEquals(response.getError(), extensionsResult.get("error"));
+        assertEquals(response.error(), extensionsResult.get("error"));
     }
 
     /**
@@ -81,7 +81,7 @@ public class CateringExceptionTest {
 
         assertEquals(HttpStatus.NOT_FOUND, extensionsResult.get("errorType"));
         assertEquals(404, extensionsResult.get("errorCode"));
-        assertEquals(response.getError(), extensionsResult.get("error"));
+        assertEquals(response.error(), extensionsResult.get("error"));
     }
 
     /**
@@ -99,7 +99,7 @@ public class CateringExceptionTest {
 
         assertEquals(HttpStatus.FORBIDDEN, extensionsResult.get("errorType"));
         assertEquals(403, extensionsResult.get("errorCode"));
-        assertEquals(response.getError(), extensionsResult.get("error"));
+        assertEquals(response.error(), extensionsResult.get("error"));
     }
 
     /**
@@ -118,6 +118,6 @@ public class CateringExceptionTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, extensionsResult.get("errorType"));
         assertEquals(400, extensionsResult.get("errorCode"));
-        assertEquals(response.getError(), extensionsResult.get("error"));
+        assertEquals(response.error(), extensionsResult.get("error"));
     }
 }

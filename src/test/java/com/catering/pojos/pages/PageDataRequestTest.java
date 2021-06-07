@@ -31,10 +31,10 @@ public class PageDataRequestTest {
     public void constructorDefault() {
         final PageDataRequest pageDataRequest = new PageDataRequest();
 
-        assertNull(pageDataRequest.getPage());
-        assertNull(pageDataRequest.getSize());
-        assertNull(pageDataRequest.getDirection());
-        assertNull(pageDataRequest.getSort());
+        assertNull(pageDataRequest.page());
+        assertNull(pageDataRequest.size());
+        assertNull(pageDataRequest.direction());
+        assertNull(pageDataRequest.sort());
     }
 
     /**
@@ -48,10 +48,10 @@ public class PageDataRequestTest {
         final List<String> SORT = List.of("S1", "S2");
         final PageDataRequest pageDataRequest = new PageDataRequest(PAGE, SIZE, DIRECTION, SORT);
 
-        assertSame(PAGE, pageDataRequest.getPage());
-        assertSame(SIZE, pageDataRequest.getSize());
-        assertSame(DIRECTION, pageDataRequest.getDirection());
-        assertSame(SORT, pageDataRequest.getSort());
+        assertSame(PAGE, pageDataRequest.page());
+        assertSame(SIZE, pageDataRequest.size());
+        assertSame(DIRECTION, pageDataRequest.direction());
+        assertSame(SORT, pageDataRequest.sort());
     }
 
     /**

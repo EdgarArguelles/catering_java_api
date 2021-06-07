@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString(callSuper = true, of = "username")
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -50,12 +51,5 @@ public class Authentication extends Model {
 
     public Authentication(String id) {
         this.id = id;
-    }
-
-    public Authentication(String username, String password, AuthProvider authProvider, Person person) {
-        this.username = username;
-        this.password = password;
-        this.authProvider = authProvider;
-        this.person = person;
     }
 }

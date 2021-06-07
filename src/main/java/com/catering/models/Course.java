@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString(callSuper = true, of = "type")
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -59,12 +60,5 @@ public class Course extends Model {
 
     public Course(String id) {
         this.id = id;
-    }
-
-    public Course(Integer position, CourseType type, Menu menu, Set<Dish> dishes) {
-        this.position = position;
-        this.type = type;
-        this.menu = menu;
-        this.dishes = dishes;
     }
 }
