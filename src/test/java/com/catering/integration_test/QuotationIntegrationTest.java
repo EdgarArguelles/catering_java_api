@@ -169,13 +169,11 @@ public class QuotationIntegrationTest {
         final String query = "query {quotationPage(pageDataRequest: {}) {totalElements}}";
         final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
         final var data = (Map<String, Object>) mapResult.get("data");
-        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
-        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
-        final var error = (Map<String, Object>) extensions.get("error");
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
-        assertNull(data.get("quotationPage"));
-        assertEquals(400, extensions.get("errorCode"));
-        assertEquals("Some data aren't valid.", error.get("message"));
+        assertNull(data);
+        assertTrue(errors.get(0).get("message")
+                .contains("Validation error of type WrongType: argument 'pageDataRequest'"));
     }
 
     /**
@@ -325,13 +323,10 @@ public class QuotationIntegrationTest {
         final String query = "mutation {createQuotation(quotation: {}) {id name}}";
         final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
         final var data = (Map<String, Object>) mapResult.get("data");
-        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
-        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
-        final var error = (Map<String, Object>) extensions.get("error");
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
-        assertNull(data.get("createQuotation"));
-        assertEquals(400, extensions.get("errorCode"));
-        assertEquals("Some data aren't valid.", error.get("message"));
+        assertNull(data);
+        assertTrue(errors.get(0).get("message").contains("Validation error of type WrongType: argument 'quotation'"));
 
         // not inserted in data base
         assertEquals(quotationRepository.count(), 3);
@@ -499,13 +494,10 @@ public class QuotationIntegrationTest {
         final String query = "mutation {updateQuotation(quotation: {}) {id name}}";
         final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
         final var data = (Map<String, Object>) mapResult.get("data");
-        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
-        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
-        final var error = (Map<String, Object>) extensions.get("error");
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
-        assertNull(data.get("updateQuotation"));
-        assertEquals(400, extensions.get("errorCode"));
-        assertEquals("Some data aren't valid.", error.get("message"));
+        assertNull(data);
+        assertTrue(errors.get(0).get("message").contains("Validation error of type WrongType: argument 'quotation'"));
 
         // not updated in data base
         validateQuotationNotEdited(dbQuotations.get(0).getId());

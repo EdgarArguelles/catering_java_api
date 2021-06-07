@@ -33,13 +33,13 @@ public class QuotationAuthenticationTest {
 
     private IntegrationTest integrationTest;
 
-    private final String quotationPageQuery = "query {quotationPage(pageDataRequest: {}) {totalElements}}";
+    private final String quotationPageQuery = "query {quotationPage(pageDataRequest: {page: 0, size: 5}) {totalElements}}";
 
     private final String quotationQuery = "query {quotation(id: 5) {id name menus{id courses{id}}}}";
 
-    private final String createQuotationQuery = "mutation {createQuotation(quotation: {}) {id name}}";
+    private final String createQuotationQuery = "mutation {createQuotation(quotation: {name: \"ABC\"}) {id name}}";
 
-    private final String updateQuotationQuery = "mutation {updateQuotation(quotation: {}) {id name}}";
+    private final String updateQuotationQuery = "mutation {updateQuotation(quotation: {name: \"ABC\"}) {id name}}";
 
     private final String deleteQuotationQuery = "mutation {deleteQuotation(id: 5) {id name}}";
 
