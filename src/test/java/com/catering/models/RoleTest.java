@@ -142,7 +142,7 @@ public class RoleTest {
 
         assertTrue(role.equals(role));
         assertFalse(role.equals(null));
-        assertFalse(role.equals(new String()));
+        assertFalse(role.equals(new Object()));
     }
 
     /**
@@ -273,8 +273,7 @@ public class RoleTest {
         final Role r = new Role();
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "must not be null"),
-                new ValidationNestedError("name", "must not be null")
-        );
+                new ValidationNestedError("name", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(r);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -289,8 +288,7 @@ public class RoleTest {
         final Role r = new Role("", "", null);
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "size must be between 1 and 255"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(r);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -307,8 +305,7 @@ public class RoleTest {
         final Role r = new Role(longText.toString(), longText.toString(), null);
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("description", "size must be between 1 and 255"),
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+                new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(r);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

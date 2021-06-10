@@ -141,7 +141,7 @@ public class QuotationTest {
 
         assertTrue(quotation.equals(quotation));
         assertFalse(quotation.equals(null));
-        assertFalse(quotation.equals(new String()));
+        assertFalse(quotation.equals(new Object()));
     }
 
     /**
@@ -270,9 +270,7 @@ public class QuotationTest {
     @Test
     public void validateWhenNull() {
         final Quotation q = new Quotation();
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("name", "must not be null")
-        );
+        final List<NestedError> nestedErrorsExpected = List.of(new ValidationNestedError("name", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(q);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -285,9 +283,8 @@ public class QuotationTest {
     @Test
     public void validateWhenEmpty() {
         final Quotation q = new Quotation("", 0F, null);
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(q);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -302,9 +299,8 @@ public class QuotationTest {
         final StringBuffer longText = new StringBuffer();
         IntStream.range(0, 256).forEach(i -> longText.append("a"));
         final Quotation q = new Quotation(longText.toString(), 0F, null);
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("name", "size must be between 1 and 255")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("name", "size must be between 1 and 255"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(q);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -321,8 +317,7 @@ public class QuotationTest {
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("menus[0].courses", "must not be empty"),
                 new ValidationNestedError("menus[0].name", "must not be null"),
-                new ValidationNestedError("menus[0].quantity", "must not be null")
-        );
+                new ValidationNestedError("menus[0].quantity", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(q);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

@@ -80,7 +80,7 @@ public class PersonTest {
         final LocalDate BIRTHDAY = LocalDate.now();
         final Integer CIVIL_STATUS = 1;
         final String SEX = "A";
-        final String EMAIL = "emailtest";
+        final String EMAIL = "email test";
         final Set<Role> ROLES = Set.of(new Role("R1"), new Role("R2"));
         final Person person = new Person(NAME, LAST_NAME, BIRTHDAY, CIVIL_STATUS, SEX, EMAIL, ROLES);
 
@@ -174,7 +174,7 @@ public class PersonTest {
     @Test
     public void setGetEmail() {
         final Person person = new Person();
-        final String EMAIL = "emailtest";
+        final String EMAIL = "email test";
         person.setEmail(EMAIL);
 
         assertSame(EMAIL, person.getEmail());
@@ -228,7 +228,8 @@ public class PersonTest {
         person.setName(NAME);
         person.setLastName(LAST_NAME);
 
-        assertEquals("Person(super=Model(id=" + ID + "), name=" + NAME + ", lastName=" + LAST_NAME + ")", person.toString());
+        assertEquals("Person(super=Model(id=" + ID + "), name=" + NAME + ", lastName=" + LAST_NAME + ")",
+                person.toString());
     }
 
     /**
@@ -254,7 +255,7 @@ public class PersonTest {
 
         assertTrue(person.equals(person));
         assertFalse(person.equals(null));
-        assertFalse(person.equals(new String()));
+        assertFalse(person.equals(new Object()));
     }
 
     /**
@@ -295,7 +296,8 @@ public class PersonTest {
         person2.setId("ID");
         person2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person2.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
-        final Person person1Null = new Person(null, "LN", BIRTHDAY, 1, "A", "E", Set.of(new Role("R1"), new Role("R2")));
+        final Person person1Null = new Person(null, "LN", BIRTHDAY, 1, "A", "E",
+                Set.of(new Role("R1"), new Role("R2")));
         person1Null.setId("ID");
         person1Null.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person1Null.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
@@ -368,7 +370,8 @@ public class PersonTest {
         person2.setId("ID");
         person2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person2.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
-        final Person person1Null = new Person("N", "LN", BIRTHDAY, null, "A", "E", Set.of(new Role("R1"), new Role("R2")));
+        final Person person1Null = new Person("N", "LN", BIRTHDAY, null, "A", "E",
+                Set.of(new Role("R1"), new Role("R2")));
         person1Null.setId("ID");
         person1Null.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person1Null.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
@@ -392,7 +395,8 @@ public class PersonTest {
         person2.setId("ID");
         person2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person2.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
-        final Person person1Null = new Person("N", "LN", BIRTHDAY, 1, null, "E", Set.of(new Role("R1"), new Role("R2")));
+        final Person person1Null = new Person("N", "LN", BIRTHDAY, 1, null, "E",
+                Set.of(new Role("R1"), new Role("R2")));
         person1Null.setId("ID");
         person1Null.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person1Null.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
@@ -416,7 +420,8 @@ public class PersonTest {
         person2.setId("ID");
         person2.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person2.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
-        final Person person1Null = new Person("N", "LN", BIRTHDAY, 1, "A", null, Set.of(new Role("R1"), new Role("R2")));
+        final Person person1Null = new Person("N", "LN", BIRTHDAY, 1, "A", null,
+                Set.of(new Role("R1"), new Role("R2")));
         person1Null.setId("ID");
         person1Null.setAuthentications(List.of(new Authentication("A1"), new Authentication("A2")));
         person1Null.setQuotations(List.of(new Quotation("Q1"), new Quotation("Q2")));
@@ -532,8 +537,7 @@ public class PersonTest {
                 new ValidationNestedError("civilStatus", "must not be null"),
                 new ValidationNestedError("lastName", "must not be null"),
                 new ValidationNestedError("name", "must not be null"),
-                new ValidationNestedError("sex", "must not be null")
-        );
+                new ValidationNestedError("sex", "must not be null"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -551,8 +555,7 @@ public class PersonTest {
                 new ValidationNestedError("email", "size must be between 3 and 255"),
                 new ValidationNestedError("lastName", "size must be between 1 and 255"),
                 new ValidationNestedError("name", "size must be between 1 and 255"),
-                new ValidationNestedError("sex", "size must be between 1 and 1")
-        );
+                new ValidationNestedError("sex", "size must be between 1 and 1"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -566,14 +569,14 @@ public class PersonTest {
     public void validateWhenMax() {
         final StringBuffer longText = new StringBuffer();
         IntStream.range(0, 256).forEach(i -> longText.append("a"));
-        final Person p = new Person(longText.toString(), longText.toString(), LocalDate.now(), 0, "SS", longText.toString(), Collections.emptySet());
+        final Person p = new Person(longText.toString(), longText.toString(), LocalDate.now(), 0, "SS",
+                longText.toString(), Collections.emptySet());
         final List<NestedError> nestedErrorsExpected = List.of(
                 new ValidationNestedError("email", "must be a well-formed email address"),
                 new ValidationNestedError("email", "size must be between 3 and 255"),
                 new ValidationNestedError("lastName", "size must be between 1 and 255"),
                 new ValidationNestedError("name", "size must be between 1 and 255"),
-                new ValidationNestedError("sex", "size must be between 1 and 1")
-        );
+                new ValidationNestedError("sex", "size must be between 1 and 1"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);
@@ -586,9 +589,8 @@ public class PersonTest {
     @Test
     public void validateWhenEmail() {
         final Person p = new Person("N", "L", LocalDate.now(), 0, "S", "invalid", Collections.emptySet());
-        final List<NestedError> nestedErrorsExpected = List.of(
-                new ValidationNestedError("email", "must be a well-formed email address")
-        );
+        final List<NestedError> nestedErrorsExpected = List
+                .of(new ValidationNestedError("email", "must be a well-formed email address"));
         final List<NestedError> nestedErrorsResult = IntegrationTest.getValidationErrors(p);
 
         assertNotSame(nestedErrorsExpected, nestedErrorsResult);

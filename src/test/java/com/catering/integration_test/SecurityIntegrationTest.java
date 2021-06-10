@@ -77,24 +77,20 @@ public class SecurityIntegrationTest {
     @BeforeEach
     public void setup() throws Exception {
         integrationTest = new IntegrationTest(mvc, mapper, tokenService);
-        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository, roleRepository, dishRepository, courseTypeRepository, categoryRepository);
+        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository,
+                roleRepository, dishRepository, courseTypeRepository, categoryRepository);
 
-        dbRoles = List.of(
-                new Role("R1", "D1", null),
-                new Role("R2", "D2", null)
-        );
+        dbRoles = List.of(new Role("R1", "D1", null), new Role("R2", "D2", null));
         roleRepository.saveAll(dbRoles);
 
-        dbPeople = List.of(
-                new Person("N1", "LN1", LocalDate.now(), 1, "A", null, Collections.emptySet()),
-                new Person("N2", "LN2", LocalDate.now(), 2, "B", null, new HashSet<>(dbRoles))
-        );
+        dbPeople = List.of(new Person("N1", "LN1", LocalDate.now(), 1, "A", null, Collections.emptySet()),
+                new Person("N2", "LN2", LocalDate.now(), 2, "B", null, new HashSet<>(dbRoles)));
         personRepository.saveAll(dbPeople);
 
-        given(tokenService.getLoggedUser(VIEW_ROLES_TOKEN)).willReturn(
-                new LoggedUser("123", null, null, null, Set.of("VIEW_ROLES")));
-        given(tokenService.getLoggedUser(CHANGE_ROLE_TOKEN)).willReturn(
-                new LoggedUser(dbPeople.get(1).getId(), null, null, null, Set.of("VIEW_ROLES")));
+        given(tokenService.getLoggedUser(VIEW_ROLES_TOKEN))
+                .willReturn(new LoggedUser("123", null, null, null, Set.of("VIEW_ROLES")));
+        given(tokenService.getLoggedUser(CHANGE_ROLE_TOKEN))
+                .willReturn(new LoggedUser(dbPeople.get(1).getId(), null, null, null, Set.of("VIEW_ROLES")));
         given(tokenService.createToken(any(LoggedUser.class))).willReturn(TOKEN);
         given(tokenService.getLoggedUser(TOKEN)).willReturn(new LoggedUser("mockID", "mockRole"));
     }
@@ -105,8 +101,8 @@ public class SecurityIntegrationTest {
     @Test
     public void changeRoleNotRoleId() throws Exception {
         final String query = "query {changeRole {id token}}";
-        final Map mapResult = integrationTest.performGraphQL(query, VIEW_ROLES_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, VIEW_ROLES_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument roleId"));
@@ -118,11 +114,11 @@ public class SecurityIntegrationTest {
     @Test
     public void changeRoleInvalidUser() throws Exception {
         final String query = "query {changeRole(roleId: \"invalid\") {id token}}";
-        final Map mapResult = integrationTest.performGraphQL(query, VIEW_ROLES_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, VIEW_ROLES_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("changeRole"));
         assertEquals(400, extensions.get("errorCode"));
@@ -135,11 +131,11 @@ public class SecurityIntegrationTest {
     @Test
     public void changeRoleInvalidRole() throws Exception {
         final String query = "query {changeRole(roleId: \"invalid\") {id token}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHANGE_ROLE_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHANGE_ROLE_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("changeRole"));
         assertEquals(400, extensions.get("errorCode"));
@@ -152,9 +148,9 @@ public class SecurityIntegrationTest {
     @Test
     public void changeRole() throws Exception {
         final String query = "query {changeRole(roleId: \"" + dbRoles.get(1).getId() + "\") {id token}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHANGE_ROLE_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map changeRole = data.get("changeRole");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHANGE_ROLE_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var changeRole = (Map<String, Object>) data.get("changeRole");
 
         assertNull(mapResult.get("errors"));
         assertEquals("mockID", changeRole.get("id"));
@@ -167,9 +163,9 @@ public class SecurityIntegrationTest {
     @Test
     public void ping() throws Exception {
         final String query = "query {ping {id token}}";
-        final Map mapResult = integrationTest.performGraphQL(query, VIEW_ROLES_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map ping = data.get("ping");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, VIEW_ROLES_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var ping = (Map<String, Object>) data.get("ping");
 
         assertNull(mapResult.get("errors"));
         assertEquals("123", ping.get("id"));
@@ -182,8 +178,8 @@ public class SecurityIntegrationTest {
     @Test
     public void getAccessCodeNotSocial() throws Exception {
         final String query = "query {getAccessCode}";
-        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument social"));
@@ -195,8 +191,8 @@ public class SecurityIntegrationTest {
     @Test
     public void getAccessCodeInvalidSocial() throws Exception {
         final String query = "query {getAccessCode(social: \"invalid\")}";
-        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("is not a valid 'SOCIAL_MEDIA'"));
@@ -208,8 +204,8 @@ public class SecurityIntegrationTest {
     @Test
     public void getAccessCodeGoogle() throws Exception {
         final String query = "query {getAccessCode(social: GOOGLE)}";
-        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
-        final Map<String, String> data = (Map) mapResult.get("data");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final var data = (Map<String, String>) mapResult.get("data");
         final String getAccessCode = data.get("getAccessCode");
 
         assertNull(mapResult.get("errors"));
@@ -222,8 +218,8 @@ public class SecurityIntegrationTest {
     @Test
     public void getAccessCodeFacebook() throws Exception {
         final String query = "query {getAccessCode(social: FACEBOOK)}";
-        final Map mapResult = integrationTest.performGraphQL(query, TOKEN);
-        final Map<String, String> data = (Map) mapResult.get("data");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, TOKEN);
+        final var data = (Map<String, String>) mapResult.get("data");
         final String getAccessCode = data.get("getAccessCode");
 
         assertNull(mapResult.get("errors"));

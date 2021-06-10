@@ -1,6 +1,7 @@
 package com.catering.models;
 
 import io.leangen.graphql.annotations.GraphQLIgnore;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 
@@ -18,18 +19,16 @@ public class Category extends Model {
     @Column(nullable = false, unique = true)
     @Getter
     @Setter
+    @GraphQLQuery(description = "Category's name")
     private String name;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @Getter
     @Setter
+    @GraphQLIgnore
     private List<Dish> dishes;
 
     public Category(String name) {
         this.name = name;
-    }
-
-    @GraphQLIgnore
-    public List<Dish> getDishes() {
-        return dishes;
     }
 }

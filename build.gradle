@@ -1,14 +1,14 @@
 /**
- * update gradle with the command: ./gradlew wrapper --gradle-version=6.7.1 --distribution-type=all
+ * update gradle with the command: ./gradlew wrapper --gradle-version=7.0.2 --distribution-type=all
  **/
 buildscript {
     ext {
-        appVersion = "0.9.3"
+        appVersion = "0.9.4"
         appName = "catering_java_api"
-        springBootVersion = "2.4.1"
+        springBootVersion = "2.5.0"
     }
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         //needed for org.springframework.boot plugin
@@ -21,12 +21,12 @@ plugins {
     //id "war" //uncomment to create a war instead of a jar
     id "application" //for sourceCompatibility
     id "jacoco" //junit code coverage
-    id "org.springframework.boot" version "2.4.1" //allow to use ./gradlew bootRun
-    id "com.github.ben-manes.versions" version "0.36.0" //allow to use ./gradlew dependencyUpdates
+    id "org.springframework.boot" version "2.5.0" //allow to use ./gradlew bootRun
+    id "com.github.ben-manes.versions" version "0.39.0" //allow to use ./gradlew dependencyUpdates
 }
 
-sourceCompatibility = JavaVersion.VERSION_15
-targetCompatibility = JavaVersion.VERSION_15
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 version = appVersion
 jar { archiveBaseName = appName } //change to war if you want to create a war instead of a jar
 jacoco { toolVersion = "0.8.6" }
@@ -52,7 +52,7 @@ idea {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -63,7 +63,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
     //for GraphQL SPQR
-    implementation("io.leangen.graphql:graphql-spqr-spring-boot-starter:0.0.4")
+    implementation("io.leangen.graphql:graphql-spqr-spring-boot-starter:0.0.5")
 
     //for security
     implementation("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
@@ -77,17 +77,17 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}")
 
     //for setter and getter annotations
-    implementation("org.projectlombok:lombok:1.18.16")
-    annotationProcessor("org.projectlombok:lombok:1.18.16")
+    implementation("org.projectlombok:lombok:1.18.20")
+    annotationProcessor("org.projectlombok:lombok:1.18.20")
 
     //for swagger REST documentation
-    implementation("org.springdoc:springdoc-openapi-ui:1.5.2")
+    implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
 
     //jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
     implementation("com.h2database:h2:1.4.200")
-    implementation("mysql:mysql-connector-java:8.0.22")
-    implementation("org.mongodb:mongo-java-driver:3.12.7")
+    implementation("mysql:mysql-connector-java:8.0.25")
+    implementation("org.mongodb:mongo-java-driver:3.12.8")
 
     //mongodb
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")
@@ -97,7 +97,7 @@ dependencies {
 
     //test
     testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-    testImplementation("org.hibernate:hibernate-validator:6.1.5.Final")
+    testImplementation("org.hibernate:hibernate-validator:6.2.0.Final")
 }
 
 test {

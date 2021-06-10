@@ -84,29 +84,22 @@ public class QuotationIntegrationTest {
     @BeforeEach
     public void setup() throws Exception {
         integrationTest = new IntegrationTest(mvc, mapper, tokenService);
-        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository, roleRepository, dishRepository, courseTypeRepository, categoryRepository);
+        IntegrationTest.cleanAllData(courseRepository, menuRepository, quotationRepository, personRepository,
+                roleRepository, dishRepository, courseTypeRepository, categoryRepository);
 
-        dbPeople = List.of(
-                new Person("N1", "LN1", LocalDate.now(), 1, "A", "aa@aa.com", Collections.emptySet()),
-                new Person("N2", "LN2", LocalDate.now(), 1, "A", "aa@aa.com", Collections.emptySet())
-        );
+        dbPeople = List.of(new Person("N1", "LN1", LocalDate.now(), 1, "A", "aa@aa.com", Collections.emptySet()),
+                new Person("N2", "LN2", LocalDate.now(), 1, "A", "aa@aa.com", Collections.emptySet()));
         personRepository.saveAll(dbPeople);
 
         dbCourseTypes = List.of(new CourseType("CT1", "P1", 1, 1));
         courseTypeRepository.saveAll(dbCourseTypes);
 
-        dbQuotations = List.of(
-                new Quotation("Q1", 111F, dbPeople.get(0)),
-                new Quotation("Q2", 222F, dbPeople.get(0)),
-                new Quotation("Q3", 333F, dbPeople.get(1))
-        );
+        dbQuotations = List.of(new Quotation("Q1", 111F, dbPeople.get(0)), new Quotation("Q2", 222F, dbPeople.get(0)),
+                new Quotation("Q3", 333F, dbPeople.get(1)));
         quotationRepository.saveAll(dbQuotations);
 
-        dbMenus = List.of(
-                new Menu("M1", 10, dbQuotations.get(0)),
-                new Menu("M2", 20, dbQuotations.get(0)),
-                new Menu("M3", 30, dbQuotations.get(1))
-        );
+        dbMenus = List.of(new Menu("M1", 10, dbQuotations.get(0)), new Menu("M2", 20, dbQuotations.get(0)),
+                new Menu("M3", 30, dbQuotations.get(1)));
         dbMenus.get(0).setCourses(List.of(new Course(1, dbCourseTypes.get(0), dbMenus.get(0), Collections.emptySet())));
         dbMenus.get(1).setCourses(List.of(new Course(2, dbCourseTypes.get(0), dbMenus.get(0), Collections.emptySet())));
         dbMenus.get(2).setCourses(List.of(new Course(3, dbCourseTypes.get(0), dbMenus.get(1), Collections.emptySet())));
@@ -115,17 +108,15 @@ public class QuotationIntegrationTest {
         dbDishes = List.of(new Dish("Dish 1", "D1", "P1", 5F, 1, dbCourseTypes.get(0), null));
         dishRepository.saveAll(dbDishes);
 
-        dbCourses = List.of(
-                new Course(1, dbCourseTypes.get(0), dbMenus.get(0), Set.of(dbDishes.get(0))),
+        dbCourses = List.of(new Course(1, dbCourseTypes.get(0), dbMenus.get(0), Set.of(dbDishes.get(0))),
                 new Course(2, dbCourseTypes.get(0), dbMenus.get(0), Set.of(dbDishes.get(0))),
-                new Course(3, dbCourseTypes.get(0), dbMenus.get(1), Set.of(dbDishes.get(0)))
-        );
+                new Course(3, dbCourseTypes.get(0), dbMenus.get(1), Set.of(dbDishes.get(0))));
         courseRepository.saveAll(dbCourses);
 
-        given(tokenService.getLoggedUser(USER_TOKEN)).willReturn(
-                new LoggedUser(dbPeople.get(0).getId(), null, null, null, Set.of("MY_DATA")));
-        given(tokenService.getLoggedUser(CHEF_TOKEN)).willReturn(
-                new LoggedUser("123", null, null, null, Set.of("MY_DATA", "VIEW_ALL_DATA")));
+        given(tokenService.getLoggedUser(USER_TOKEN))
+                .willReturn(new LoggedUser(dbPeople.get(0).getId(), null, null, null, Set.of("MY_DATA")));
+        given(tokenService.getLoggedUser(CHEF_TOKEN))
+                .willReturn(new LoggedUser("123", null, null, null, Set.of("MY_DATA", "VIEW_ALL_DATA")));
     }
 
     /**
@@ -134,8 +125,8 @@ public class QuotationIntegrationTest {
     @Test
     public void validateGraphQLIgnore() throws Exception {
         final String query = "query {quotation(id: 1) {id name person menus{quotation courses{menu}}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Field 'person' in type 'Quotation' is undefined"));
@@ -146,15 +137,16 @@ public class QuotationIntegrationTest {
     /**
      * Should return an error response
      */
-    /* @Test
+    // @Test
     public void validateComplexity() throws Exception {
         final String query = "query {quotationPage(pageDataRequest: {page: 0, size: 1}) {totalElements content{id menus{id}}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
-        assertEquals("Requested operation exceeds the permitted complexity limit: 203 > 200", errors.get(0).get("message"));
-    } */
+        assertEquals("Requested operation exceeds the permitted complexity limit: 203 > 200",
+                errors.get(0).get("message"));
+    }
 
     /**
      * Should return an error response
@@ -162,8 +154,8 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationPageNotData() throws Exception {
         final String query = "query {quotationPage {totalElements}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument pageDataRequest"));
@@ -175,15 +167,13 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationPageInvalid() throws Exception {
         final String query = "query {quotationPage(pageDataRequest: {}) {totalElements}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
-        assertNull(data.get("quotationPage"));
-        assertEquals(400, extensions.get("errorCode"));
-        assertEquals("Some data aren't valid.", error.get("message"));
+        assertNull(data);
+        assertTrue(errors.get(0).get("message")
+                .contains("Validation error of type WrongType: argument 'pageDataRequest'"));
     }
 
     /**
@@ -192,10 +182,10 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationPage() throws Exception {
         final String query = "query {quotationPage(pageDataRequest: {page: 0, size: 1}) {totalElements content{id}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotationPage = data.get("quotationPage");
-        final List quotations = (List) quotationPage.get("content");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotationPage = (Map<String, Object>) data.get("quotationPage");
+        final var quotations = (List<Map<String, Object>>) quotationPage.get("content");
 
         assertNull(mapResult.get("errors"));
         assertEquals(2, quotationPage.get("totalElements"));
@@ -208,10 +198,10 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationPageChefToken() throws Exception {
         final String query = "query {quotationPage(pageDataRequest: {page: 0, size: 1}) {totalElements content{id}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotationPage = data.get("quotationPage");
-        final List quotations = (List) quotationPage.get("content");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotationPage = (Map<String, Object>) data.get("quotationPage");
+        final var quotations = (List<Map<String, Object>>) quotationPage.get("content");
 
         assertNull(mapResult.get("errors"));
         assertEquals(3, quotationPage.get("totalElements"));
@@ -224,8 +214,8 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationNotID() throws Exception {
         final String query = "query {quotation {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument id"));
@@ -237,11 +227,11 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationNotFound() throws Exception {
         final String query = "query {quotation(id: " + dbQuotations.get(2).getId() + ") {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("quotation"));
         assertEquals(404, extensions.get("errorCode"));
@@ -253,12 +243,13 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void quotation() throws Exception {
-        final String query = "query {quotation(id: " + dbQuotations.get(0).getId() + ") {id name menus{name courses{position}}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map<String, List> quotation = data.get("quotation");
-        final List<Map> menus = quotation.get("menus");
-        final List<Map> courses = (List) menus.get(0).get("courses");
+        final String query = "query {quotation(id: " + dbQuotations.get(0).getId()
+                + ") {id name menus{name courses{position}}}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("quotation");
+        final var menus = (List<Map<String, Object>>) quotation.get("menus");
+        final var courses = (List<Map<String, Object>>) menus.get(0).get("courses");
 
         assertNull(mapResult.get("errors"));
         assertEquals("Q1", quotation.get("name"));
@@ -276,11 +267,11 @@ public class QuotationIntegrationTest {
     @Test
     public void quotationChefTokenNotFound() throws Exception {
         final String query = "query {quotation(id: 123) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("quotation"));
         assertEquals(404, extensions.get("errorCode"));
@@ -292,11 +283,12 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void quotationChefToken() throws Exception {
-        final String query = "query {quotation(id: " + dbQuotations.get(2).getId() + ") {id name menus{name courses{position}}}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map<String, List> quotation = data.get("quotation");
-        final List<Map> menus = quotation.get("menus");
+        final String query = "query {quotation(id: " + dbQuotations.get(2).getId()
+                + ") {id name menus{name courses{position}}}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("quotation");
+        final var menus = (List<Map<String, Object>>) quotation.get("menus");
 
         assertNull(mapResult.get("errors"));
         assertEquals("Q3", quotation.get("name"));
@@ -309,8 +301,8 @@ public class QuotationIntegrationTest {
     @Test
     public void createQuotationNotData() throws Exception {
         final String query = "mutation {createQuotation {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument quotation"));
@@ -329,15 +321,12 @@ public class QuotationIntegrationTest {
     @Test
     public void createQuotationInvalid() throws Exception {
         final String query = "mutation {createQuotation(quotation: {}) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
-        assertNull(data.get("createQuotation"));
-        assertEquals(400, extensions.get("errorCode"));
-        assertEquals("Some data aren't valid.", error.get("message"));
+        assertNull(data);
+        assertTrue(errors.get(0).get("message").contains("Validation error of type WrongType: argument 'quotation'"));
 
         // not inserted in data base
         assertEquals(quotationRepository.count(), 3);
@@ -352,14 +341,16 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void createQuotationInvalidTypeID() throws Exception {
-        final String course1 = "{position: 1 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course1 = "{position: 1 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId()
+                + "\"}]}";
         final String menu1 = "{name: \"M4\" quantity: 10 courses: [" + course1 + "]}";
 
-        final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: [" + menu1 + "]}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map<String, Map<String, String>> extensions = (Map) errors.get(0).get("extensions");
+        final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: [" + menu1
+                + "]}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Map<String, String>>) errors.get(0).get("extensions");
 
         assertNull(data.get("createQuotation"));
         assertEquals("INTERNAL_SERVER_ERROR", extensions.get("errorType"));
@@ -379,14 +370,16 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void createQuotationNotDishID() throws Exception {
-        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{name: \"123\"}]}";
+        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId()
+                + "\"} dishes: [{name: \"123\"}]}";
         final String menu1 = "{name: \"M4\" quantity: 10 courses: [" + course1 + "]}";
 
-        final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: [" + menu1 + "]}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map<String, Map<String, String>> extensions = (Map) errors.get(0).get("extensions");
+        final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: [" + menu1
+                + "]}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Map<String, String>>) errors.get(0).get("extensions");
 
         assertNull(data.get("createQuotation"));
         assertEquals("INTERNAL_SERVER_ERROR", extensions.get("errorType"));
@@ -407,11 +400,11 @@ public class QuotationIntegrationTest {
     @Test
     public void createQuotationNullMenus() throws Exception {
         final String query = "mutation {createQuotation(quotation: {name: \"Q4\"}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("createQuotation"));
         assertEquals(500, extensions.get("errorCode"));
@@ -431,9 +424,9 @@ public class QuotationIntegrationTest {
     @Test
     public void createQuotationEmptyMenus() throws Exception {
         final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: []}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotation = data.get("createQuotation");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("createQuotation");
 
         assertNull(mapResult.get("errors"));
         assertEquals("Q4", quotation.get("name"));
@@ -452,15 +445,18 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void createQuotation() throws Exception {
-        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
-        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \""
+                + dbDishes.get(0).getId() + "\"}]}";
+        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \""
+                + dbDishes.get(0).getId() + "\"}]}";
         final String menu1 = "{name: \"M4\" quantity: 10 courses: [" + course1 + ", " + course2 + "]}";
         final String menu2 = "{name: \"M5\" quantity: 20 courses: [" + course1 + ", " + course2 + "]}";
 
-        final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: [" + menu1 + ", " + menu2 + "]}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotation = data.get("createQuotation");
+        final String query = "mutation {createQuotation(quotation: {name: \"Q4\" price: 444 menus: [" + menu1 + ", "
+                + menu2 + "]}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("createQuotation");
 
         assertNull(mapResult.get("errors"));
         assertEquals("Q4", quotation.get("name"));
@@ -480,8 +476,8 @@ public class QuotationIntegrationTest {
     @Test
     public void updateQuotationNotData() throws Exception {
         final String query = "mutation {updateQuotation {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument quotation"));
@@ -496,15 +492,12 @@ public class QuotationIntegrationTest {
     @Test
     public void updateQuotationInvalid() throws Exception {
         final String query = "mutation {updateQuotation(quotation: {}) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
-        assertNull(data.get("updateQuotation"));
-        assertEquals(400, extensions.get("errorCode"));
-        assertEquals("Some data aren't valid.", error.get("message"));
+        assertNull(data);
+        assertTrue(errors.get(0).get("message").contains("Validation error of type WrongType: argument 'quotation'"));
 
         // not updated in data base
         validateQuotationNotEdited(dbQuotations.get(0).getId());
@@ -515,12 +508,13 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void updateQuotationNotFound() throws Exception {
-        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(2).getId() + "\" name: \"Q11\"}) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(2).getId()
+                + "\" name: \"Q11\"}) {id name}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("updateQuotation"));
         assertEquals(404, extensions.get("errorCode"));
@@ -536,11 +530,11 @@ public class QuotationIntegrationTest {
     @Test
     public void updateQuotationChefTokenNotFound() throws Exception {
         final String query = "mutation {updateQuotation(quotation: {id: \"123456\" name: \"Q11\"}) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("updateQuotation"));
         assertEquals(404, extensions.get("errorCode"));
@@ -555,19 +549,24 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void updateQuotationInvalidTypeID() throws Exception {
-        final String course0 = "{id: \"" + dbCourses.get(0).getId() + "\" position: 11 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
-        final String course1 = "{position: 1 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
-        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course0 = "{id: \"" + dbCourses.get(0).getId()
+                + "\" position: 11 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course1 = "{position: 1 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId()
+                + "\"}]}";
+        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \""
+                + dbDishes.get(0).getId() + "\"}]}";
 
-        final String menu0 = "{id: \"" + dbMenus.get(0).getId() + "\" name: \"M11\" quantity: 110 courses: [" + course0 + ", " + course1 + ", " + course2 + "]}";
+        final String menu0 = "{id: \"" + dbMenus.get(0).getId() + "\" name: \"M11\" quantity: 110 courses: [" + course0
+                + ", " + course1 + ", " + course2 + "]}";
         final String menu1 = "{name: \"M4\" quantity: 10 courses: [" + course1 + ", " + course2 + "]}";
         final String menu2 = "{name: \"M5\" quantity: 20 courses: [" + course1 + "]}";
         final String menus = "[" + menu0 + ", " + menu1 + ", " + menu2 + "]";
-        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId() + "\" name: \"Q11\" price: 888 menus: " + menus + "}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map<String, Map<String, String>> extensions = (Map) errors.get(0).get("extensions");
+        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId()
+                + "\" name: \"Q11\" price: 888 menus: " + menus + "}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Map<String, String>>) errors.get(0).get("extensions");
 
         assertNull(data.get("updateQuotation"));
         assertEquals("INTERNAL_SERVER_ERROR", extensions.get("errorType"));
@@ -583,19 +582,24 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void updateQuotationNotDishID() throws Exception {
-        final String course0 = "{id: \"" + dbCourses.get(0).getId() + "\" position: 11 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
-        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{name: \"name\"}]}";
-        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course0 = "{id: \"" + dbCourses.get(0).getId()
+                + "\" position: 11 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId()
+                + "\"} dishes: [{name: \"name\"}]}";
+        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \""
+                + dbDishes.get(0).getId() + "\"}]}";
 
-        final String menu0 = "{id: \"" + dbMenus.get(0).getId() + "\" name: \"M11\" quantity: 110 courses: [" + course0 + ", " + course1 + ", " + course2 + "]}";
+        final String menu0 = "{id: \"" + dbMenus.get(0).getId() + "\" name: \"M11\" quantity: 110 courses: [" + course0
+                + ", " + course1 + ", " + course2 + "]}";
         final String menu1 = "{name: \"M4\" quantity: 10 courses: [" + course1 + ", " + course2 + "]}";
         final String menu2 = "{name: \"M5\" quantity: 20 courses: [" + course1 + "]}";
         final String menus = "[" + menu0 + ", " + menu1 + ", " + menu2 + "]";
-        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId() + "\" name: \"Q11\" price: 888 menus: " + menus + "}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map<String, Map<String, String>> extensions = (Map) errors.get(0).get("extensions");
+        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId()
+                + "\" name: \"Q11\" price: 888 menus: " + menus + "}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Map<String, String>>) errors.get(0).get("extensions");
 
         assertNull(data.get("updateQuotation"));
         assertEquals("INTERNAL_SERVER_ERROR", extensions.get("errorType"));
@@ -611,12 +615,13 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void updateQuotationNullMenus() throws Exception {
-        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId() + "\" name: \"Q11\" price: 888}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId()
+                + "\" name: \"Q11\" price: 888}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("updateQuotation"));
         assertEquals(500, extensions.get("errorCode"));
@@ -631,10 +636,11 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void updateQuotationEmptyMenus() throws Exception {
-        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId() + "\" name: \"Q11\" price: 888 menus: []}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotation = data.get("updateQuotation");
+        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId()
+                + "\" name: \"Q11\" price: 888 menus: []}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("updateQuotation");
 
         assertNull(mapResult.get("errors"));
         assertEquals(dbQuotations.get(0).getId(), quotation.get("id"));
@@ -654,18 +660,23 @@ public class QuotationIntegrationTest {
      */
     @Test
     public void updateQuotation() throws Exception {
-        final String course0 = "{id: \"" + dbCourses.get(0).getId() + "\" position: 11 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
-        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
-        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course0 = "{id: \"" + dbCourses.get(0).getId()
+                + "\" position: 11 type: {id: \"invalid\"} dishes: [{id: \"" + dbDishes.get(0).getId() + "\"}]}";
+        final String course1 = "{position: 1 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \""
+                + dbDishes.get(0).getId() + "\"}]}";
+        final String course2 = "{position: 2 type: {id: \"" + dbCourseTypes.get(0).getId() + "\"} dishes: [{id: \""
+                + dbDishes.get(0).getId() + "\"}]}";
 
-        final String menu0 = "{id: \"" + dbMenus.get(0).getId() + "\" name: \"M11\" quantity: 110 courses: [" + course0 + ", " + course1 + ", " + course2 + "]}";
+        final String menu0 = "{id: \"" + dbMenus.get(0).getId() + "\" name: \"M11\" quantity: 110 courses: [" + course0
+                + ", " + course1 + ", " + course2 + "]}";
         final String menu1 = "{name: \"M4\" quantity: 10 courses: [" + course1 + ", " + course2 + "]}";
         final String menu2 = "{name: \"M5\" quantity: 20 courses: [" + course1 + "]}";
         final String menus = "[" + menu0 + ", " + menu1 + ", " + menu2 + "]";
-        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId() + "\" name: \"Q11\" price: 888 menus: " + menus + "}) {id name price}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotation = data.get("updateQuotation");
+        final String query = "mutation {updateQuotation(quotation: {id: \"" + dbQuotations.get(0).getId()
+                + "\" name: \"Q11\" price: 888 menus: " + menus + "}) {id name price}}";
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("updateQuotation");
 
         assertNull(mapResult.get("errors"));
         assertEquals(dbQuotations.get(0).getId(), quotation.get("id"));
@@ -682,8 +693,8 @@ public class QuotationIntegrationTest {
     @Test
     public void deleteQuotationNotID() throws Exception {
         final String query = "mutation {deleteQuotation {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final List<Map<String, String>> errors = (List) mapResult.get("errors");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var errors = (List<Map<String, String>>) mapResult.get("errors");
 
         assertNull(mapResult.get("data"));
         assertTrue(errors.get(0).get("message").contains("Missing field argument id"));
@@ -702,11 +713,11 @@ public class QuotationIntegrationTest {
     @Test
     public void deleteQuotationNotFound() throws Exception {
         final String query = "mutation {deleteQuotation(id: " + dbQuotations.get(2).getId() + ") {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("deleteQuotation"));
         assertEquals(404, extensions.get("errorCode"));
@@ -726,11 +737,11 @@ public class QuotationIntegrationTest {
     @Test
     public void deleteQuotationChefTokenNotFound() throws Exception {
         final String query = "mutation {deleteQuotation(id: 123456) {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map extensions = (Map) errors.get(0).get("extensions");
-        final Map error = (Map) extensions.get("error");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, CHEF_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Object>) errors.get(0).get("extensions");
+        final var error = (Map<String, Object>) extensions.get("error");
 
         assertNull(data.get("deleteQuotation"));
         assertEquals(404, extensions.get("errorCode"));
@@ -750,9 +761,9 @@ public class QuotationIntegrationTest {
     @Test
     public void deleteQuotation() throws Exception {
         final String query = "mutation {deleteQuotation(id: " + dbQuotations.get(0).getId() + ") {id name}}";
-        final Map mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
-        final Map<String, Map> data = (Map) mapResult.get("data");
-        final Map quotation = data.get("deleteQuotation");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(query, USER_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var quotation = (Map<String, Object>) data.get("deleteQuotation");
 
         assertNull(mapResult.get("errors"));
         assertEquals("Q1", quotation.get("name"));

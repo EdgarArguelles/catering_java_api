@@ -8,6 +8,7 @@ import com.catering.pojos.responses.error.nesteds.NestedError;
 import com.catering.pojos.responses.error.nesteds.ValidationNestedError;
 import graphql.execution.DataFetcherExceptionHandler;
 import graphql.execution.DataFetcherExceptionHandlerParameters;
+import graphql.execution.DataFetcherExceptionHandlerResult;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class GraphQLExceptionsHandler implements DataFetcherExceptionHandler {
 
     @Override
-    public void accept(DataFetcherExceptionHandlerParameters handlerParameters) {
+    public DataFetcherExceptionHandlerResult onException(DataFetcherExceptionHandlerParameters handlerParameters) {
         Throwable exception = handlerParameters.getException();
 
         CateringException cateringException;
@@ -31,13 +32,12 @@ public class GraphQLExceptionsHandler implements DataFetcherExceptionHandler {
                 cateringException = new CateringAuthenticationException("Access is denied.");
             }
             if (exception instanceof ConstraintViolationException) {
-                List<NestedError> nestedErrors = ((ConstraintViolationException) exception).getConstraintViolations().stream()
-                        .map(violation -> {
+                List<NestedError> nestedErrors = ((ConstraintViolationException) exception).getConstraintViolations()
+                        .stream().map(violation -> {
                             String field = violation.getPropertyPath().toString();
                             field = field.substring(field.lastIndexOf(".") + 1);
                             return new ValidationNestedError(field, violation.getMessage());
-                        })
-                        .collect(Collectors.toList());
+                        }).collect(Collectors.toList());
                 cateringException = new CateringValidationException("Some data aren't valid.", nestedErrors);
             }
 
@@ -45,6 +45,6 @@ public class GraphQLExceptionsHandler implements DataFetcherExceptionHandler {
         }
 
         cateringException.setPath(handlerParameters.getPath().toList());
-        handlerParameters.getExecutionContext().addError(cateringException);
+        return DataFetcherExceptionHandlerResult.newResult().error(cateringException).build();
     }
 }

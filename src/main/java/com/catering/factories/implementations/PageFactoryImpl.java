@@ -15,12 +15,13 @@ public class PageFactoryImpl implements PageFactory {
     public PageRequest pageRequest(PageDataRequest pageDataRequest) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
 
-        if (pageDataRequest.getSort() != null && !pageDataRequest.getSort().isEmpty()) {
-            Sort.Direction direction = pageDataRequest.getDirection() != null ? getDirection(pageDataRequest.getDirection()) : null;
-            sort = Sort.by(Objects.requireNonNull(direction), pageDataRequest.getSort().toArray(new String[0]));
+        if (pageDataRequest.sort() != null && !pageDataRequest.sort().isEmpty()) {
+            Sort.Direction direction = pageDataRequest.direction() != null ? getDirection(pageDataRequest.direction())
+                    : null;
+            sort = Sort.by(Objects.requireNonNull(direction), pageDataRequest.sort().toArray(new String[0]));
         }
 
-        return PageRequest.of(pageDataRequest.getPage(), pageDataRequest.getSize(), sort);
+        return PageRequest.of(pageDataRequest.page(), pageDataRequest.size(), sort);
     }
 
     /**

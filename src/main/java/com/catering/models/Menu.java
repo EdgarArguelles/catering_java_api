@@ -1,6 +1,7 @@
 package com.catering.models;
 
 import io.leangen.graphql.annotations.GraphQLIgnore;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -26,6 +27,7 @@ public class Menu extends Model {
     @Column(nullable = false)
     @Getter
     @Setter
+    @GraphQLQuery(description = "Menu's name")
     private String name;
 
     @NotNull
@@ -33,12 +35,15 @@ public class Menu extends Model {
     @Column(nullable = false, columnDefinition = "smallint")
     @Getter
     @Setter
+    @GraphQLQuery(description = "Menu's quantity > 0")
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quotation_id", nullable = false)
     @DBRef // all foreign keys need @DBRef to notify Mongo about relationship and ownership
+    @Getter
     @Setter
+    @GraphQLIgnore
     private Quotation quotation;
 
     // this entity doesn't have the ownership
@@ -57,10 +62,5 @@ public class Menu extends Model {
         this.name = name;
         this.quantity = quantity;
         this.quotation = quotation;
-    }
-
-    @GraphQLIgnore
-    public Quotation getQuotation() {
-        return quotation;
     }
 }

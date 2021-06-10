@@ -3,7 +3,7 @@
 /////////////// Wildfly ///////////////
 ./../../../../Tools/jboss/wildfly-10.1.0.Final/bin/standalone.sh
 http://localhost:9990/
- Edgar/dark
+Edgar/dark
 
 /////////////// Mongo ///////////////
 ./../../../../Tools/mongodb/bin/mongod --auth --dbpath=/Users/edgararguelles/data/db

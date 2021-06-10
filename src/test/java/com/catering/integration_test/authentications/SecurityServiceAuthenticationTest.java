@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@SuppressWarnings("unchecked")
 public class SecurityServiceAuthenticationTest {
 
     @Autowired
@@ -50,7 +51,8 @@ public class SecurityServiceAuthenticationTest {
      */
     @Test
     public void changeRoleNotToken() throws Exception {
-        final Map data = integrationTest.failGraphQL(changeRoleQuery, "There isn't any logged user.", null);
+        final Map<String, Object> data = integrationTest.failGraphQL(changeRoleQuery, "There isn't any logged user.",
+                null);
 
         assertNull(data.get("changeRole"));
     }
@@ -68,7 +70,8 @@ public class SecurityServiceAuthenticationTest {
      */
     @Test
     public void changeRoleNotPermission() throws Exception {
-        final Map data = integrationTest.failGraphQL(changeRoleQuery, "The given id must not be null", IntegrationTest.NOT_PERMISSION_TOKEN);
+        final Map<String, Object> data = integrationTest.failGraphQL(changeRoleQuery, "The given id must not be null",
+                IntegrationTest.NOT_PERMISSION_TOKEN);
 
         assertNull(data.get("changeRole"));
     }
@@ -78,8 +81,8 @@ public class SecurityServiceAuthenticationTest {
      */
     @Test
     public void pingNotToken() throws Exception {
-        final Map mapResult = integrationTest.performGraphQL(pingQuery, null);
-        final Map data = (Map) mapResult.get("data");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(pingQuery, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
 
         assertNull(mapResult.get("errors"));
         assertNull(data.get("ping"));
@@ -98,9 +101,10 @@ public class SecurityServiceAuthenticationTest {
      */
     @Test
     public void pingNotPermission() throws Exception {
-        final Map mapResult = integrationTest.performGraphQL(pingQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
-        final Map data = (Map) mapResult.get("data");
-        final Map ping = (Map) data.get("ping");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(pingQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var ping = (Map<String, Object>) data.get("ping");
 
         assertNull(mapResult.get("errors"));
         assertNull(ping.get("id"));
@@ -112,8 +116,8 @@ public class SecurityServiceAuthenticationTest {
      */
     @Test
     public void getAccessCodeNotToken() throws Exception {
-        final Map mapResult = integrationTest.performGraphQL(getAccessCodeQuery, null);
-        final Map data = (Map) mapResult.get("data");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(getAccessCodeQuery, null);
+        final var data = (Map<String, Object>) mapResult.get("data");
 
         assertNull(mapResult.get("errors"));
         assertNotNull(data.get("getAccessCode"));
@@ -132,8 +136,9 @@ public class SecurityServiceAuthenticationTest {
      */
     @Test
     public void getAccessCodeNotPermission() throws Exception {
-        final Map mapResult = integrationTest.performGraphQL(getAccessCodeQuery, IntegrationTest.NOT_PERMISSION_TOKEN);
-        final Map data = (Map) mapResult.get("data");
+        final Map<String, Object> mapResult = integrationTest.performGraphQL(getAccessCodeQuery,
+                IntegrationTest.NOT_PERMISSION_TOKEN);
+        final var data = (Map<String, Object>) mapResult.get("data");
 
         assertNull(mapResult.get("errors"));
         assertNotNull(data.get("getAccessCode"));

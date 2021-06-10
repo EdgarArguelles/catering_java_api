@@ -48,26 +48,19 @@ public class IntegrationTest {
         this.tokenService = tokenService;
 
         given(tokenService.refreshToken()).willReturn(NEW_TOKEN);
-        given(tokenService.getLoggedUser(ALL_PERMISSIONS_TOKEN)).willReturn(
-                new LoggedUser("ID", "FN", null, "R", Set.of("MY_DATA"))
-        );
-        given(tokenService.getLoggedUser(NOT_PERMISSION_TOKEN)).willReturn(
-                new LoggedUser(null, null, null, null, Collections.emptySet()));
+        given(tokenService.getLoggedUser(ALL_PERMISSIONS_TOKEN))
+                .willReturn(new LoggedUser("ID", "FN", null, "R", Set.of("MY_DATA")));
+        given(tokenService.getLoggedUser(NOT_PERMISSION_TOKEN))
+                .willReturn(new LoggedUser(null, null, null, null, Collections.emptySet()));
     }
 
     /**
      * Clean all database entries
      */
-    public static void cleanAllData(
-            CourseRepository courseRepository,
-            MenuRepository menuRepository,
-            QuotationRepository quotationRepository,
-            PersonRepository personRepository,
-            RoleRepository roleRepository,
-            DishRepository dishRepository,
-            CourseTypeRepository courseTypeRepository,
-            CategoryRepository categoryRepository
-    ) {
+    public static void cleanAllData(CourseRepository courseRepository, MenuRepository menuRepository,
+            QuotationRepository quotationRepository, PersonRepository personRepository, RoleRepository roleRepository,
+            DishRepository dishRepository, CourseTypeRepository courseTypeRepository,
+            CategoryRepository categoryRepository) {
         courseRepository.deleteAll();
         menuRepository.deleteAll();
         quotationRepository.deleteAll();
@@ -85,13 +78,11 @@ public class IntegrationTest {
      */
     public void failGraphQLTokenInvalid(String query) throws Exception {
         final MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post(GRAPH_QL_PATH)
-                .content(new JSONObject(Map.of("query", query)).toString())
-                .header("Authorization", "Bearer Invalid")
+                .content(new JSONObject(Map.of("query", query)).toString()).header("Authorization", "Bearer Invalid")
                 .contentType(MediaType.APPLICATION_JSON);
 
-        final String bodyResult = mvc.perform(builder)
-                .andExpect(status().isUnauthorized())
-                .andReturn().getResponse().getContentAsString();
+        final String bodyResult = mvc.perform(builder).andExpect(status().isUnauthorized()).andReturn().getResponse()
+                .getContentAsString();
 
         assertEquals("", bodyResult);
         verify(tokenService, times(1)).getLoggedUser("Invalid");
@@ -104,7 +95,7 @@ public class IntegrationTest {
      * @param token authorization token to be used in the header
      * @return generated response
      */
-    public Map failGraphQLAccessDenied(String query, String token) throws Exception {
+    public Map<String, Object> failGraphQLAccessDenied(String query, String token) throws Exception {
         return failGraphQL(query, "Access is denied", token);
     }
 
@@ -116,23 +107,21 @@ public class IntegrationTest {
      * @param token authorization token to be used in the header
      * @return generated response
      */
-    public Map failGraphQL(String query, String error, String token) throws Exception {
+    public Map<String, Object> failGraphQL(String query, String error, String token) throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post(GRAPH_QL_PATH)
-                .content(new JSONObject(Map.of("query", query)).toString())
-                .contentType(MediaType.APPLICATION_JSON);
+                .content(new JSONObject(Map.of("query", query)).toString()).contentType(MediaType.APPLICATION_JSON);
 
         if (token != null) {
             builder = builder.header("Authorization", "Bearer " + token);
         }
 
-        final String bodyResult = mvc.perform(builder)
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+        final String bodyResult = mvc.perform(builder).andExpect(status().isOk()).andReturn().getResponse()
+                .getContentAsString();
 
-        final Map mapResult = mapper.readValue(bodyResult, HashMap.class);
-        final Map data = (Map) mapResult.get("data");
-        final List<Map> errors = (List) mapResult.get("errors");
-        final Map<String, Map<String, String>> extensions = (Map) errors.get(0).get("extensions");
+        final Map<String, Object> mapResult = mapper.readValue(bodyResult, HashMap.class);
+        final var data = (Map<String, Object>) mapResult.get("data");
+        final var errors = (List<Map<String, Object>>) mapResult.get("errors");
+        final var extensions = (Map<String, Map<String, String>>) errors.get(0).get("extensions");
 
         if (error.equals("Access is denied")) {
             assertEquals("Access is denied.", errors.get(0).get("message"));
@@ -165,20 +154,18 @@ public class IntegrationTest {
      * @param token authorization token to be used in the header
      * @return generated response
      */
-    public Map performGraphQL(String query, String token) throws Exception {
+    public Map<String, Object> performGraphQL(String query, String token) throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post(GRAPH_QL_PATH)
-                .content(new JSONObject(Map.of("query", query)).toString())
-                .contentType(MediaType.APPLICATION_JSON);
+                .content(new JSONObject(Map.of("query", query)).toString()).contentType(MediaType.APPLICATION_JSON);
 
         if (token != null) {
             builder = builder.header("Authorization", "Bearer " + token);
         }
 
-        final String bodyResult = mvc.perform(builder)
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+        final String bodyResult = mvc.perform(builder).andExpect(status().isOk()).andReturn().getResponse()
+                .getContentAsString();
 
-        final Map mapResult = mapper.readValue(bodyResult, HashMap.class);
+        final Map<String, Object> mapResult = mapper.readValue(bodyResult, HashMap.class);
 
         if (token != null) {
             verify(tokenService, times(1)).getLoggedUser(token);
@@ -200,9 +187,10 @@ public class IntegrationTest {
         final Validator validator = factory.getValidator();
         final Set<ConstraintViolation<Object>> violations = validator.validate(object);
 
-        final List<NestedError> collect = violations.stream()
-                .map(violation -> new ValidationNestedError(violation.getPropertyPath().toString(), violation.getMessage()))
-                .sorted(Comparator.comparing(ValidationNestedError::getField).thenComparing(ValidationNestedError::getMessage))
+        final List<NestedError> collect = violations.stream().map(
+                violation -> new ValidationNestedError(violation.getPropertyPath().toString(), violation.getMessage()))
+                .sorted(Comparator.comparing(ValidationNestedError::getField)
+                        .thenComparing(ValidationNestedError::getMessage))
                 .collect(Collectors.toList());
 
         return collect;

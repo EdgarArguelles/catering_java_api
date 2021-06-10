@@ -2,21 +2,20 @@ package com.catering.pojos.responses.error;
 
 import com.catering.pojos.responses.error.nesteds.NestedError;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 /**
  * Error Response pojo
  */
-@NoArgsConstructor
-@EqualsAndHashCode
-public class ErrorResponse {
+public record ErrorResponse(Error error) {
 
-    @Getter
-    private Error error;
+    /**
+     * Create an instance without parameters
+     */
+    public ErrorResponse() {
+        this((Error) null);
+    }
 
     /**
      * Create an instance without specific developer message
@@ -45,27 +44,10 @@ public class ErrorResponse {
      * @param nestedErrors nested errors displayed to users
      */
     public ErrorResponse(String message, String devMessage, List<NestedError> nestedErrors) {
-        this.error = new Error(message, devMessage, nestedErrors);
+        this(new Error(message, devMessage, nestedErrors));
     }
 
-    @NoArgsConstructor
-    @EqualsAndHashCode
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private class Error {
-
-        @Getter
-        private String message;
-
-        @Getter
-        private String devMessage;
-
-        @Getter
-        private List<NestedError> nestedErrors;
-
-        public Error(String message, String devMessage, List<NestedError> nestedErrors) {
-            this.message = message;
-            this.devMessage = devMessage;
-            this.nestedErrors = nestedErrors;
-        }
+    private record Error(String message, String devMessage, List<NestedError> nestedErrors) {
     }
 }

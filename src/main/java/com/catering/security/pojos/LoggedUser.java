@@ -1,5 +1,6 @@
 package com.catering.security.pojos;
 
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,24 +18,30 @@ import java.util.Set;
 public class LoggedUser {
 
     @Getter
+    @GraphQLQuery(description = "User's ID")
     private String id;
 
     @Getter
+    @GraphQLQuery(description = "User's full name")
     private String fullName;
 
     @Getter
     @Setter
+    @GraphQLQuery(description = "User's image")
     private String image;
 
     @Getter
+    @GraphQLQuery(description = "User's role")
     private String role;
 
     @Getter
     @Setter
+    @GraphQLQuery(description = "User's token")
     private String token;
 
     @Getter
     @Setter
+    @GraphQLQuery(description = "User's permissions")
     private Set<String> permissions;
 
     /**

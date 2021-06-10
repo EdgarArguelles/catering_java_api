@@ -1,6 +1,12 @@
 .gradle
 build
+bin
 
-### IntelliJ IDEA ###
-.idea
-*.iml
+### Mac ###
+.DS_Store
+
+### VS Code ###
+.vscode
+.settings
+.classpath
+.project

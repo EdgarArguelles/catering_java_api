@@ -24,51 +24,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@SuppressWarnings("unchecked")
 public class InfoCtrlIntegrationTest {
 
-    private final String BASE_URL = "/info";
+        private final String BASE_URL = "/info";
 
-    @Autowired
-    private MockMvc mvc;
+        @Autowired
+        private MockMvc mvc;
 
-    @Autowired
-    private ObjectMapper mapper;
+        @Autowired
+        private ObjectMapper mapper;
 
-    /**
-     * Should get application.properties api-version
-     */
-    @Test
-    public void version() throws Exception {
-        final String VERSION = "0.1";
-        final MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get(BASE_URL + "/version")
-                .contentType(MediaType.APPLICATION_JSON);
+        /**
+         * Should get application.properties api-version
+         */
+        @Test
+        public void version() throws Exception {
+                final String VERSION = "0.1";
+                final MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get(BASE_URL + "/version")
+                                .contentType(MediaType.APPLICATION_JSON);
 
-        final String bodyResult = mvc.perform(builder)
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                final String bodyResult = mvc.perform(builder).andExpect(status().isOk()).andReturn().getResponse()
+                                .getContentAsString();
 
-        final Map mapResult = mapper.readValue(bodyResult, HashMap.class);
+                final Map<String, Object> mapResult = mapper.readValue(bodyResult, HashMap.class);
 
-        assertNotSame(VERSION, mapResult.get("version"));
-        assertEquals(VERSION, mapResult.get("version"));
-    }
+                assertNotSame(VERSION, mapResult.get("version"));
+                assertEquals(VERSION, mapResult.get("version"));
+        }
 
-    /**
-     * Should get an empty list
-     */
-    @Test
-    public void environment() throws Exception {
-        final List<String> ENVIRONMENT = Collections.emptyList();
-        final MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get(BASE_URL + "/environment")
-                .contentType(MediaType.APPLICATION_JSON);
+        /**
+         * Should get an empty list
+         */
+        @Test
+        public void environment() throws Exception {
+                final List<String> ENVIRONMENT = Collections.emptyList();
+                final MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get(BASE_URL + "/environment")
+                                .contentType(MediaType.APPLICATION_JSON);
 
-        final String bodyResult = mvc.perform(builder)
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                final String bodyResult = mvc.perform(builder).andExpect(status().isOk()).andReturn().getResponse()
+                                .getContentAsString();
 
-        final Map mapResult = mapper.readValue(bodyResult, HashMap.class);
+                final Map<String, Object> mapResult = mapper.readValue(bodyResult, HashMap.class);
 
-        assertNotSame(ENVIRONMENT, mapResult.get("environment"));
-        assertEquals(ENVIRONMENT, mapResult.get("environment"));
-    }
+                assertNotSame(ENVIRONMENT, mapResult.get("environment"));
+                assertEquals(ENVIRONMENT, mapResult.get("environment"));
+        }
 }
